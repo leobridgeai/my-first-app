@@ -34,6 +34,18 @@ export default function PhotosManagementPage() {
     albumIds: [] as string[],
   });
 
+  useEffect(() => {
+    Promise.all([fetch("/api/photos"), fetch("/api/albums")])
+      .then(([photosRes, albumsRes]) =>
+        Promise.all([photosRes.json(), albumsRes.json()])
+      )
+      .then(([photosData, albumsData]) => {
+        setPhotos(photosData);
+        setAlbums(albumsData);
+        setLoading(false);
+      });
+  }, []);
+
   async function loadData() {
     const [photosRes, albumsRes] = await Promise.all([
       fetch("/api/photos"),
@@ -43,10 +55,6 @@ export default function PhotosManagementPage() {
     setAlbums(await albumsRes.json());
     setLoading(false);
   }
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   function startEditing(photo: Photo) {
     setEditingId(photo.id);

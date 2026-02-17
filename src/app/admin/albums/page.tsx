@@ -24,15 +24,20 @@ export default function AlbumsManagementPage() {
   });
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    fetch("/api/albums")
+      .then((res) => res.json())
+      .then((data) => {
+        setAlbums(data);
+        setLoading(false);
+      });
+  }, []);
+
   async function loadAlbums() {
     const res = await fetch("/api/albums");
     setAlbums(await res.json());
     setLoading(false);
   }
-
-  useEffect(() => {
-    loadAlbums();
-  }, []);
 
   async function createAlbum(e: React.FormEvent) {
     e.preventDefault();
