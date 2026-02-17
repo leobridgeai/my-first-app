@@ -15,6 +15,12 @@ export async function GET() {
   const albums = await prisma.album.findMany({
     include: {
       _count: { select: { photos: true } },
+      coverPhoto: true,
+      photos: {
+        include: { photo: true },
+        orderBy: { photo: { sortOrder: "asc" } },
+        take: 1,
+      },
     },
     orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
   });

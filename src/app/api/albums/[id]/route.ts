@@ -8,7 +8,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
   const { id } = await params;
   const body = await request.json();
-  const { name, description, sortOrder } = body;
+  const { name, description, sortOrder, coverPhotoId } = body;
 
   const album = await prisma.album.update({
     where: { id },
@@ -16,6 +16,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       ...(name !== undefined && { name }),
       ...(description !== undefined && { description }),
       ...(sortOrder !== undefined && { sortOrder }),
+      ...(coverPhotoId !== undefined && { coverPhotoId }),
     },
   });
 

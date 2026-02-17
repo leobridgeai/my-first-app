@@ -8,14 +8,16 @@ datasource db {
 }
 
 model Album {
-  id          String       @id @default(uuid())
-  name        String
-  slug        String       @unique
-  description String?
-  sortOrder   Int          @default(0)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  photos      PhotoAlbum[]
+  id           String       @id @default(uuid())
+  name         String
+  slug         String       @unique
+  description  String?
+  coverPhotoId String?
+  sortOrder    Int          @default(0)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  coverPhoto   Photo?       @relation("AlbumCover", fields: [coverPhotoId], references: [id], onDelete: SetNull)
+  photos       PhotoAlbum[]
 }
 
 model Photo {
@@ -31,6 +33,7 @@ model Photo {
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
   albums             PhotoAlbum[]
+  coverForAlbums     Album[]      @relation("AlbumCover")
 }
 
 model PhotoAlbum {

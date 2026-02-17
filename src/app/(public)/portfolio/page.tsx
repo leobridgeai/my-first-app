@@ -10,6 +10,7 @@ export default async function PortfolioPage() {
   const albums = await prisma.album.findMany({
     include: {
       _count: { select: { photos: true } },
+      coverPhoto: true,
       photos: {
         include: { photo: true },
         orderBy: { photo: { sortOrder: "asc" } },
@@ -33,7 +34,7 @@ export default async function PortfolioPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {albums.map((album) => {
-            const coverPhoto = album.photos[0]?.photo;
+            const coverPhoto = album.coverPhoto || album.photos[0]?.photo;
             return (
               <Link
                 key={album.id}
