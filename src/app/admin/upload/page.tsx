@@ -257,29 +257,30 @@ export default function UploadPage() {
                 />
 
                 <div className="flex flex-wrap gap-2 items-center">
-                  {/* Album selection */}
-                  {albums.length > 0 && (
-                    <select
-                      multiple
-                      value={file.albumIds}
-                      onChange={(e) =>
-                        updateFile(index, {
-                          albumIds: Array.from(
-                            e.target.selectedOptions,
-                            (o) => o.value
-                          ),
-                        })
-                      }
-                      disabled={file.uploaded}
-                      className="text-xs border border-gray-200 px-2 py-1 rounded focus:outline-none focus:border-foreground disabled:bg-gray-50"
-                    >
-                      {albums.map((album) => (
-                        <option key={album.id} value={album.id}>
-                          {album.name}
-                        </option>
-                      ))}
-                    </select>
-                  )}
+                  {/* Album selection as clickable pills */}
+                  {albums.map((album) => {
+                    const isSelected = file.albumIds.includes(album.id);
+                    return (
+                      <button
+                        key={album.id}
+                        type="button"
+                        disabled={file.uploaded}
+                        onClick={() => {
+                          const newIds = isSelected
+                            ? file.albumIds.filter((id) => id !== album.id)
+                            : [...file.albumIds, album.id];
+                          updateFile(index, { albumIds: newIds });
+                        }}
+                        className={`text-xs px-3 py-1 rounded-full border transition-colors disabled:opacity-50 ${
+                          isSelected
+                            ? "bg-foreground text-white border-foreground"
+                            : "bg-white text-muted border-gray-300 hover:border-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {album.name}
+                      </button>
+                    );
+                  })}
 
                   <label className="flex items-center gap-1.5 text-xs text-muted">
                     <input
