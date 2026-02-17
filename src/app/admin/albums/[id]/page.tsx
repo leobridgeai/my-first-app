@@ -142,31 +142,9 @@ export default function AlbumDetailPage() {
   async function removePhotoFromAlbum(photoId: string) {
     if (!confirm("Remove this photo from the album?")) return;
 
-    // Re-assign the photo's albums minus this album
-    const photoRes = await fetch(`/api/photos?includeAlbums=true`);
-    const allPhotos = await photoRes.json();
-    const photo = allPhotos.find((p: { id: string }) => p.id === photoId);
-    if (!photo) return;
-
-    const remainingAlbumIds = photo.albums
-      .map((pa: { album: { id: string } }) => pa.album.id)
-      .filter((aid: string) => aid !== id);
-
-    await fetch(`/api/photos/${photoId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ albumIds: remainingAlbumIds }),
+    await fetch(`/api/albums/${id}/photos/${photoId}`, {
+      method: "DELETE",
     });
-
-    // If this photo was the cover, clear the cover
-    if (album?.coverPhotoId === photoId) {
-      await fetch(`/api/albums/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ coverPhotoId: null }),
-      });
-    }
-
     loadAlbum();
   }
 
@@ -453,6 +431,22 @@ export default function AlbumDetailPage() {
         {/* Pending uploads */}
         {files.length > 0 && (
           <div className="mt-4 space-y-2">
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-muted">
+                {files.length} {files.length === 1 ? "file" : "files"} selected
+              </p>
+              {pendingCount > 0 && (
+                <button
+                  onClick={uploadAll}
+                  disabled={saving}
+                  className="px-6 py-2 bg-foreground text-white text-xs tracking-widest uppercase hover:bg-foreground/90 transition-colors disabled:opacity-50"
+                >
+                  {saving
+                    ? "Uploading..."
+                    : `Upload ${pendingCount} ${pendingCount === 1 ? "Photo" : "Photos"}`}
+                </button>
+              )}
+            </div>
             {files.map((file, index) => (
               <div
                 key={index}
@@ -513,17 +507,6 @@ export default function AlbumDetailPage() {
                 )}
               </div>
             ))}
-            {pendingCount > 0 && (
-              <button
-                onClick={uploadAll}
-                disabled={saving}
-                className="px-6 py-2 bg-foreground text-white text-xs tracking-widest uppercase hover:bg-foreground/90 transition-colors disabled:opacity-50"
-              >
-                {saving
-                  ? "Uploading..."
-                  : `Upload ${pendingCount} ${pendingCount === 1 ? "Photo" : "Photos"}`}
-              </button>
-            )}
           </div>
         )}
       </div>
