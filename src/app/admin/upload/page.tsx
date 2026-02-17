@@ -88,55 +88,73 @@ export default function UploadPage() {
     );
   }
 
+  async function uploadSingleFile(i: number) {
+    const file = files[i];
+    if (file.uploaded) return;
+
+    updateFile(i, { uploading: true, error: undefined });
+
+    try {
+      // Upload to Cloudinary
+      const formData = new FormData();
+      formData.append("files", file.file);
+
+      const uploadRes = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!uploadRes.ok) {
+        const data = await uploadRes.json().catch(() => ({}));
+        throw new Error(data.error || `Upload failed (${uploadRes.status})`);
+      }
+
+      const [result] = await uploadRes.json();
+
+      // Save to database
+      const saveRes = await fetch("/api/photos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: file.title || null,
+          cloudinaryPublicId: result.publicId,
+          cloudinaryUrl: result.url,
+          width: result.width,
+          height: result.height,
+          albumIds: file.albumIds,
+          isFeatured: file.isFeatured,
+        }),
+      });
+
+      if (!saveRes.ok) throw new Error("Save to database failed");
+
+      updateFile(i, { uploading: false, uploaded: true, result });
+    } catch (err) {
+      updateFile(i, {
+        uploading: false,
+        error: err instanceof Error ? err.message : "Upload failed",
+      });
+    }
+  }
+
   async function uploadAndSave() {
     setSaving(true);
 
     for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      if (file.uploaded) continue;
-
-      updateFile(i, { uploading: true });
-
-      try {
-        // Upload to Cloudinary
-        const formData = new FormData();
-        formData.append("files", file.file);
-
-        const uploadRes = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!uploadRes.ok) throw new Error("Upload failed");
-
-        const [result] = await uploadRes.json();
-
-        // Save to database
-        const saveRes = await fetch("/api/photos", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: file.title || null,
-            cloudinaryPublicId: result.publicId,
-            cloudinaryUrl: result.url,
-            width: result.width,
-            height: result.height,
-            albumIds: file.albumIds,
-            isFeatured: file.isFeatured,
-          }),
-        });
-
-        if (!saveRes.ok) throw new Error("Save failed");
-
-        updateFile(i, { uploading: false, uploaded: true, result });
-      } catch (err) {
-        updateFile(i, {
-          uploading: false,
-          error: err instanceof Error ? err.message : "Upload failed",
-        });
+      if (files[i].uploaded) continue;
+      await uploadSingleFile(i);
+      // Small delay between uploads to avoid rate limiting
+      if (i < files.length - 1) {
+        await new Promise((r) => setTimeout(r, 1000));
       }
     }
 
+    setSaving(false);
+  }
+
+  async function retryFile(index: number) {
+    setSaving(true);
+    await uploadSingleFile(index);
     setSaving(false);
   }
 
@@ -284,7 +302,16 @@ export default function UploadPage() {
                   <p className="text-xs text-green-600">Uploaded successfully</p>
                 )}
                 {file.error && (
-                  <p className="text-xs text-red-600">{file.error}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs text-red-600">{file.error}</p>
+                    <button
+                      onClick={() => retryFile(index)}
+                      disabled={saving}
+                      className="text-xs px-2 py-0.5 border border-red-300 text-red-600 rounded hover:bg-red-50 transition-colors disabled:opacity-50"
+                    >
+                      Retry
+                    </button>
+                  </div>
                 )}
               </div>
 
