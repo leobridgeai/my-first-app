@@ -42,7 +42,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <div>
+          <div suppressHydrationWarning>
             <label
               htmlFor="username"
               className="block text-xs tracking-widest uppercase text-muted mb-2"
@@ -56,10 +56,11 @@ export default function LoginPage() {
               onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-3 border border-gray-200 focus:border-foreground focus:outline-none text-sm transition-colors"
               required
+              suppressHydrationWarning
             />
           </div>
 
-          <div>
+          <div suppressHydrationWarning>
             <label
               htmlFor="password"
               className="block text-xs tracking-widest uppercase text-muted mb-2"
@@ -73,6 +74,7 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 border border-gray-200 focus:border-foreground focus:outline-none text-sm transition-colors"
               required
+              suppressHydrationWarning
             />
           </div>
 
