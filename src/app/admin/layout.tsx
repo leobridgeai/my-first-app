@@ -32,8 +32,6 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
 
   const navItems = [
     { href: "/admin", label: "Dashboard" },
-    { href: "/admin/upload", label: "Upload" },
-    { href: "/admin/photos", label: "Photos" },
     { href: "/admin/albums", label: "Albums" },
   ];
 
@@ -52,9 +50,13 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
                   key={item.href}
                   href={item.href}
                   className={`text-xs tracking-widest uppercase px-3 py-1.5 rounded transition-colors ${
-                    pathname === item.href
-                      ? "bg-foreground text-white"
-                      : "text-muted hover:text-foreground"
+                    item.href === "/admin"
+                      ? pathname === item.href
+                        ? "bg-foreground text-white"
+                        : "text-muted hover:text-foreground"
+                      : pathname.startsWith(item.href)
+                        ? "bg-foreground text-white"
+                        : "text-muted hover:text-foreground"
                   }`}
                 >
                   {item.label}
@@ -84,9 +86,13 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
               key={item.href}
               href={item.href}
               className={`text-xs tracking-widest uppercase px-3 py-1.5 rounded whitespace-nowrap transition-colors ${
-                pathname === item.href
-                  ? "bg-foreground text-white"
-                  : "text-muted hover:text-foreground"
+                item.href === "/admin"
+                  ? pathname === item.href
+                    ? "bg-foreground text-white"
+                    : "text-muted hover:text-foreground"
+                  : pathname.startsWith(item.href)
+                    ? "bg-foreground text-white"
+                    : "text-muted hover:text-foreground"
               }`}
             >
               {item.label}

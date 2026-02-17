@@ -57,35 +57,18 @@ export default function AdminDashboard() {
 
       {/* Quick actions */}
       <h2 className="text-lg font-heading mb-4">Quick Actions</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {[
-          {
-            href: "/admin/upload",
-            label: "Upload Photos",
-            description: "Add new photos to your portfolio",
-          },
-          {
-            href: "/admin/photos",
-            label: "Manage Photos",
-            description: "Edit, organize, and delete photos",
-          },
-          {
-            href: "/admin/albums",
-            label: "Manage Albums",
-            description: "Create and organize albums",
-          },
-        ].map((action) => (
-          <Link
-            key={action.href}
-            href={action.href}
-            className="bg-white p-6 rounded border border-gray-200 hover:border-foreground transition-colors group"
-          >
-            <p className="font-medium group-hover:text-foreground">
-              {action.label}
-            </p>
-            <p className="text-sm text-muted mt-1">{action.description}</p>
-          </Link>
-        ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Link
+          href="/admin/albums"
+          className="bg-white p-6 rounded border border-gray-200 hover:border-foreground transition-colors group"
+        >
+          <p className="font-medium group-hover:text-foreground">
+            Manage Albums
+          </p>
+          <p className="text-sm text-muted mt-1">
+            Create albums and manage photos
+          </p>
+        </Link>
       </div>
     </div>
   );
