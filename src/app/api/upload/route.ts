@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/api-auth";
 import cloudinary from "@/lib/cloudinary";
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+export const maxDuration = 60;
+
 export async function POST(request: NextRequest) {
   const authError = await requireAuth();
   if (authError) return authError;
