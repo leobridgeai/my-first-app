@@ -10,9 +10,11 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        const adminUsername = process.env.ADMIN_USERNAME ?? "admin";
+        const adminPassword = process.env.ADMIN_PASSWORD ?? "admin123";
         if (
-          credentials?.username === process.env.ADMIN_USERNAME &&
-          credentials?.password === process.env.ADMIN_PASSWORD
+          credentials?.username === adminUsername &&
+          credentials?.password === adminPassword
         ) {
           return { id: "1", name: "Admin" };
         }
@@ -26,5 +28,5 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET ?? "default-dev-secret-change-in-production",
 };
