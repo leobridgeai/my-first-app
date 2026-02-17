@@ -62,7 +62,7 @@ export default function HomeClient({
                 Portrait Photography
               </h1>
               <p className="text-white/80 mt-3 text-lg max-w-md">
-                Capturing authentic moments and timeless portraits.
+                Observing people as they are.
               </p>
               <Link
                 href="/portfolio"
@@ -96,7 +96,7 @@ export default function HomeClient({
                 Portrait Photography
               </h1>
               <p className="text-muted mt-4 text-lg max-w-md mx-auto">
-                Capturing authentic moments and timeless portraits.
+                Observing people as they are.
               </p>
               <Link
                 href="/portfolio"
