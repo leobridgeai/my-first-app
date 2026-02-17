@@ -35,7 +35,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <h1 className="text-2xl font-heading text-center mb-8">Admin Login</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" suppressHydrationWarning>
           {error && (
             <div className="p-3 text-sm text-red-600 bg-red-50 rounded">
               {error}
