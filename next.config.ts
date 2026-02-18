@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  serverExternalPackages: [],
+  serverExternalPackages: ["@libsql/client", "@prisma/adapter-libsql", "prisma"],
   experimental: {
     serverActions: {
       bodySizeLimit: "20mb",
