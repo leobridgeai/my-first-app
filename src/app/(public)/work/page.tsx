@@ -22,9 +22,9 @@ export default async function WorkPage() {
 
   return (
     <div className="pt-16">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-16 md:py-24">
-        {/* Bold header */}
-        <div className="mb-16 md:mb-20">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-12 md:py-20">
+        {/* Header */}
+        <div className="mb-12 md:mb-16">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold tracking-[-0.02em] uppercase leading-[0.85]">
             Work
           </h1>
@@ -33,33 +33,42 @@ export default async function WorkPage() {
 
         {albums.length === 0 ? (
           <div className="text-center py-24">
-            <p className="text-white/30 text-sm tracking-[0.2em] uppercase">No work yet.</p>
+            <p className="text-white/30 text-sm tracking-[0.2em] uppercase">
+              No work yet.
+            </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+          <div className="work-grid">
             {albums.map((album, index) => {
               const coverPhoto = album.coverPhoto || album.photos[0]?.photo;
+              // Determine tile size class based on position for editorial layout
+              const sizeClass = getTileSize(index, albums.length);
+
               return (
                 <Link
                   key={album.id}
                   href={`/work/${album.slug}`}
-                  className="group block relative animate-slide-up"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  className={`group block relative animate-slide-up ${sizeClass}`}
+                  style={{ animationDelay: `${index * 80}ms` }}
                 >
-                  <div className="relative aspect-[4/5] overflow-hidden bg-surface">
+                  <div className="relative w-full h-full overflow-hidden bg-surface">
                     {coverPhoto ? (
                       <Image
                         src={coverPhoto.cloudinaryUrl}
                         alt={album.name}
                         fill
-                        className="object-cover photo-harsh transition-transform duration-700 group-hover:scale-[1.05]"
-                        sizes="(max-width: 640px) 100vw, 50vw"
+                        className="object-cover photo-harsh transition-transform duration-700 group-hover:scale-[1.03]"
+                        sizes={
+                          sizeClass.includes("span-2")
+                            ? "(max-width: 768px) 100vw, 66vw"
+                            : "(max-width: 768px) 100vw, 33vw"
+                        }
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="w-16 h-16 text-white/10"
+                          className="w-12 h-12 text-white/10"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -73,32 +82,23 @@ export default async function WorkPage() {
                         </svg>
                       </div>
                     )}
-                    {/* Heavy dark overlay on hover */}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/60 transition-all duration-500 flex items-end">
-                      <div className="p-6 md:p-8 w-full translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                        <h2 className="text-white text-2xl md:text-3xl font-heading font-bold tracking-tight uppercase">
-                          {album.name}
-                        </h2>
-                        {album.description && (
-                          <p className="text-white/50 text-sm mt-2">
-                            {album.description}
-                          </p>
-                        )}
-                        <p className="text-white/30 text-[10px] mt-3 tracking-[0.3em] uppercase">
-                          {album._count.photos}{" "}
-                          {album._count.photos === 1 ? "image" : "images"}
-                        </p>
-                      </div>
-                    </div>
 
-                    {/* Vignette on each image */}
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.4)_100%)] pointer-events-none" />
-                  </div>
-                  {/* Title below - stark */}
-                  <div className="mt-3 mb-6">
-                    <h2 className="text-[10px] tracking-[0.3em] uppercase text-white/50 group-hover:text-white transition-colors duration-300 font-medium">
-                      {album.name}
-                    </h2>
+                    {/* Gradient overlay - always visible, stronger on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent group-hover:from-black/80 transition-all duration-500" />
+
+                    {/* Subtle hover brightening */}
+                    <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-all duration-500" />
+
+                    {/* Title - always visible, overlaid at bottom */}
+                    <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+                      <h2 className="text-white text-lg md:text-xl font-heading font-bold tracking-wide uppercase leading-tight">
+                        {album.name}
+                      </h2>
+                      <p className="text-white/40 text-[10px] mt-1.5 tracking-[0.25em] uppercase">
+                        {album._count.photos}{" "}
+                        {album._count.photos === 1 ? "image" : "images"}
+                      </p>
+                    </div>
                   </div>
                 </Link>
               );
@@ -108,4 +108,25 @@ export default async function WorkPage() {
       </div>
     </div>
   );
+}
+
+/**
+ * Returns a CSS class that determines the tile size in the editorial grid.
+ * Creates a varied, magazine-style layout:
+ * - First album is always large (spans 2 columns)
+ * - Then alternates between standard and featured sizes
+ */
+function getTileSize(index: number, total: number): string {
+  if (total === 1) return "work-tile-hero";
+  if (total === 2) return "work-tile-half";
+
+  // First item is always the hero / large tile
+  if (index === 0) return "work-tile-hero";
+
+  // Create a repeating pattern: after the hero, cycle through
+  // [standard, standard, wide, standard, standard, wide, ...]
+  const pos = (index - 1) % 4;
+  if (pos === 2) return "work-tile-wide";
+
+  return "work-tile-standard";
 }
