@@ -10,50 +10,50 @@ interface HomeClientProps {
 
 export default function HomeClient({ heroImageUrl }: HomeClientProps) {
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-black">
-      {/* Full-screen hero image */}
+    <div className="relative min-h-screen w-full overflow-hidden bg-black">
+      {/* Full-screen hero image with harsh contrast */}
       {heroImageUrl ? (
         <Image
           src={heroImageUrl}
           alt="Featured photograph"
           fill
-          className="object-cover"
+          className="object-cover photo-harsh"
           priority
           sizes="100vw"
         />
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 to-black" />
+        <div className="absolute inset-0 bg-black" />
       )}
 
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/30" />
+      {/* Dark overlay - heavier for dramatic effect */}
+      <div className="absolute inset-0 bg-black/50" />
 
-      {/* Content overlay - bottom left */}
+      {/* Harsh vignette */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.8)_100%)]" />
+
+      {/* Content overlay - bold, confrontational */}
       <div className="absolute inset-0 flex flex-col justify-end">
-        <div className="px-6 md:px-10 pb-16 md:pb-20 max-w-[1400px] mx-auto w-full">
-          <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-heading tracking-tight leading-none">
-            Portrait
-            <br />
-            Photography
-          </h1>
-          <p className="text-white/60 mt-4 text-sm md:text-base tracking-wide max-w-md">
-            Observing people as they are.
-          </p>
+        <div className="px-6 md:px-12 pb-20 md:pb-28 max-w-[1400px] mx-auto w-full">
+          <div className="animate-flicker">
+            <h1 className="text-white text-6xl md:text-8xl lg:text-[10rem] font-heading font-bold tracking-[-0.02em] leading-[0.85] uppercase">
+              Faces
+            </h1>
+            <div className="harsh-divider w-24 md:w-40 mt-6 mb-6" />
+            <p className="text-white/50 text-xs md:text-sm tracking-[0.3em] uppercase max-w-md font-medium">
+              Up close. No apologies.
+            </p>
+          </div>
           <Link
             href="/work"
-            className="inline-block mt-8 text-[11px] tracking-[0.25em] uppercase text-white/70 hover:text-white border-b border-white/30 hover:border-white pb-1 transition-all duration-300"
+            className="inline-block mt-10 px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-black bg-white hover:bg-white/90 transition-all duration-200 font-semibold"
           >
-            View Work
+            Enter
           </Link>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
-        <div className="w-[1px] h-8 bg-white/20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-white/60 animate-pulse" />
-        </div>
-      </div>
+      {/* Bottom edge line */}
+      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/10" />
     </div>
   );
 }

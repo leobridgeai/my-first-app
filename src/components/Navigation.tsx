@@ -17,13 +17,13 @@ export default function Navigation() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
-        isHome ? "bg-transparent" : "bg-black/80 backdrop-blur-sm"
+        isHome ? "bg-transparent" : "bg-black/90 backdrop-blur-sm border-b border-white/5"
       }`}
     >
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 h-20 flex items-center justify-between">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
         <Link
           href="/"
-          className="font-heading text-xl md:text-2xl tracking-[0.15em] uppercase text-white hover:opacity-70 transition-opacity"
+          className="text-white text-xs md:text-sm tracking-[0.4em] uppercase font-semibold hover:opacity-70 transition-opacity text-glitch"
         >
           Portfolio
         </Link>
@@ -34,10 +34,10 @@ export default function Navigation() {
             <Link
               key={link.href}
               href={link.href}
-              className={`text-[11px] tracking-[0.25em] uppercase transition-opacity duration-200 ${
+              className={`text-[10px] tracking-[0.35em] uppercase font-medium transition-all duration-200 ${
                 pathname.startsWith(link.href)
                   ? "text-white"
-                  : "text-white/60 hover:text-white"
+                  : "text-white/40 hover:text-white"
               }`}
             >
               {link.label}
@@ -73,17 +73,17 @@ export default function Navigation() {
 
       {/* Mobile menu - fullscreen overlay */}
       {menuOpen && (
-        <div className="md:hidden fixed inset-0 top-20 bg-black/95 backdrop-blur-sm z-40">
-          <div className="flex flex-col items-center justify-center h-full gap-8 -mt-20">
+        <div className="md:hidden fixed inset-0 top-16 bg-black z-40">
+          <div className="flex flex-col items-start justify-center h-full px-8 gap-8 -mt-16">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className={`text-2xl tracking-[0.2em] uppercase font-heading transition-opacity ${
+                className={`text-4xl tracking-[0.2em] uppercase font-heading font-bold transition-opacity ${
                   pathname.startsWith(link.href)
                     ? "text-white"
-                    : "text-white/50 hover:text-white"
+                    : "text-white/30 hover:text-white"
                 }`}
               >
                 {link.label}

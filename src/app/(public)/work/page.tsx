@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Work | Portrait Photography",
+  title: "Work | Raw Street Portraits",
 };
 
 export default async function WorkPage() {
@@ -21,25 +21,30 @@ export default async function WorkPage() {
   });
 
   return (
-    <div className="pt-20">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16 md:py-24">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading tracking-tight mb-16">
-          Work
-        </h1>
+    <div className="pt-16">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-16 md:py-24">
+        {/* Bold header */}
+        <div className="mb-16 md:mb-20">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold tracking-[-0.02em] uppercase leading-[0.85]">
+            Work
+          </h1>
+          <div className="harsh-divider w-16 md:w-24 mt-6" />
+        </div>
 
         {albums.length === 0 ? (
-          <div className="text-center py-20 text-muted">
-            <p>No work yet.</p>
+          <div className="text-center py-24">
+            <p className="text-white/30 text-sm tracking-[0.2em] uppercase">No work yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-            {albums.map((album) => {
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+            {albums.map((album, index) => {
               const coverPhoto = album.coverPhoto || album.photos[0]?.photo;
               return (
                 <Link
                   key={album.id}
                   href={`/work/${album.slug}`}
-                  className="group block relative"
+                  className="group block relative animate-slide-up"
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="relative aspect-[4/5] overflow-hidden bg-surface">
                     {coverPhoto ? (
@@ -47,18 +52,18 @@ export default async function WorkPage() {
                         src={coverPhoto.cloudinaryUrl}
                         alt={album.name}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                        className="object-cover photo-harsh transition-transform duration-700 group-hover:scale-[1.05]"
                         sizes="(max-width: 640px) 100vw, 50vw"
                       />
                     ) : (
-                      <div className="absolute inset-0 flex items-center justify-center text-muted">
+                      <div className="absolute inset-0 flex items-center justify-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="w-12 h-12 opacity-30"
+                          className="w-16 h-16 text-white/10"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
-                          strokeWidth={1}
+                          strokeWidth={0.5}
                         >
                           <path
                             strokeLinecap="round"
@@ -68,27 +73,30 @@ export default async function WorkPage() {
                         </svg>
                       </div>
                     )}
-                    {/* Hover overlay */}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-500 flex items-end">
-                      <div className="p-6 md:p-8 w-full translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                        <h2 className="text-white text-xl md:text-2xl font-heading tracking-tight">
+                    {/* Heavy dark overlay on hover */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/60 transition-all duration-500 flex items-end">
+                      <div className="p-6 md:p-8 w-full translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                        <h2 className="text-white text-2xl md:text-3xl font-heading font-bold tracking-tight uppercase">
                           {album.name}
                         </h2>
                         {album.description && (
-                          <p className="text-white/60 text-sm mt-1">
+                          <p className="text-white/50 text-sm mt-2">
                             {album.description}
                           </p>
                         )}
-                        <p className="text-white/40 text-xs mt-2 tracking-wide">
+                        <p className="text-white/30 text-[10px] mt-3 tracking-[0.3em] uppercase">
                           {album._count.photos}{" "}
-                          {album._count.photos === 1 ? "photo" : "photos"}
+                          {album._count.photos === 1 ? "image" : "images"}
                         </p>
                       </div>
                     </div>
+
+                    {/* Vignette on each image */}
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.4)_100%)] pointer-events-none" />
                   </div>
-                  {/* Title always visible below image */}
-                  <div className="mt-3">
-                    <h2 className="text-sm tracking-[0.15em] uppercase text-white/80 group-hover:text-white transition-colors">
+                  {/* Title below - stark */}
+                  <div className="mt-3 mb-6">
+                    <h2 className="text-[10px] tracking-[0.3em] uppercase text-white/50 group-hover:text-white transition-colors duration-300 font-medium">
                       {album.name}
                     </h2>
                   </div>

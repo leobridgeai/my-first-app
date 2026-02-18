@@ -1,76 +1,84 @@
 export const metadata = {
-  title: "About | Portrait Photography",
+  title: "About | Raw Street Portraits",
 };
 
 export default function AboutPage() {
   return (
-    <div className="pt-20">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16 md:py-24">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading tracking-tight mb-16">
-          About
-        </h1>
+    <div className="pt-16">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-16 md:py-24">
+        {/* Bold header */}
+        <div className="mb-16 md:mb-24">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold tracking-[-0.02em] uppercase leading-[0.85]">
+            About
+          </h1>
+          <div className="harsh-divider w-16 md:w-24 mt-6" />
+        </div>
 
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
-          {/* Placeholder portrait */}
-          <div className="aspect-[3/4] bg-surface flex items-center justify-center">
-            <div className="text-center text-muted">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-16 h-16 mx-auto mb-3 opacity-30"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                />
-              </svg>
-              <p className="text-xs tracking-wide">Photographer portrait</p>
+          {/* Placeholder portrait - raw frame */}
+          <div className="relative">
+            <div className="aspect-[3/4] bg-surface border border-white/5 flex items-center justify-center overflow-hidden">
+              <div className="text-center text-muted">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-20 h-20 mx-auto mb-3 opacity-20"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={0.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                  />
+                </svg>
+                <p className="text-[10px] tracking-[0.3em] uppercase">Self portrait</p>
+              </div>
             </div>
           </div>
 
-          {/* Bio */}
+          {/* Bio - manifesto style */}
           <div>
-            <h2 className="text-2xl md:text-3xl font-heading mb-6 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-8 tracking-tight uppercase">
               The Photographer
             </h2>
-            <div className="space-y-5 text-muted leading-relaxed text-[15px]">
-              <p>
-                Welcome to my portfolio. I&apos;m a portrait photographer with a
-                passion for capturing the unique essence of every individual I
-                work with.
+            <div className="space-y-6 text-muted leading-relaxed text-[15px]">
+              <p className="text-white/90 text-lg md:text-xl leading-relaxed font-heading italic">
+                &ldquo;I get close because that&apos;s the only way to get to the truth of a face.&rdquo;
               </p>
               <p>
-                My approach combines natural light with thoughtful composition to
-                create images that feel both timeless and authentic. Whether in
-                the studio or on location, I aim to make every session a
-                comfortable and creative experience.
+                The streets are my studio. The flash is my paintbrush. Every face
+                tells a story that most people walk past without seeing. I don&apos;t
+                walk past.
               </p>
               <p>
-                I specialize in studio portraits, outdoor sessions, and black
-                &amp; white photography. Each project is an opportunity to tell a
-                visual story that resonates.
+                My work is raw, direct, and unapologetic. I photograph people as
+                they are &mdash; not as they want to be seen. The beauty is in the
+                imperfection, in the character lines, in the unguarded moment.
+              </p>
+              <p>
+                High contrast. Close range. No soft focus. No flattery. Just the
+                honest, brutal poetry of a human face.
               </p>
             </div>
 
-            <div className="mt-10 pt-10 border-t border-border">
-              <h3 className="text-[11px] tracking-[0.25em] uppercase text-white mb-5">
-                Specialties
+            <div className="mt-12 pt-12 border-t border-white/10">
+              <h3 className="text-[10px] tracking-[0.35em] uppercase text-white/60 mb-6 font-semibold">
+                Approach
               </h3>
               <div className="flex flex-wrap gap-2">
                 {[
-                  "Studio Portraits",
-                  "Outdoor Sessions",
+                  "Street Portraits",
+                  "High Contrast",
                   "Black & White",
-                  "Editorial",
-                  "Headshots",
+                  "Close-Up",
+                  "Flash Photography",
+                  "Raw & Unfiltered",
                 ].map((specialty) => (
                   <span
                     key={specialty}
-                    className="px-3 py-1.5 text-xs tracking-wide border border-border text-muted hover:text-white hover:border-white/40 transition-colors"
+                    className="px-4 py-2 text-[10px] tracking-[0.2em] uppercase border border-white/10 text-white/50 hover:text-white hover:border-white/40 hover:bg-white/5 transition-all duration-200"
                   >
                     {specialty}
                   </span>
