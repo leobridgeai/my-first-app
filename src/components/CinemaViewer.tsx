@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import Image from "next/image";
 
 interface Photo {
   id: string;
@@ -112,16 +111,13 @@ export default function CinemaViewer({ photos }: CinemaViewerProps) {
         )}
 
         {/* The photograph — projected onto the dark canvas */}
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           key={photo.id}
           src={photo.cloudinaryUrl}
           alt={photo.title || "Photograph"}
-          width={photo.width || 1200}
-          height={photo.height || 800}
           className="max-w-full max-h-full object-contain transition-opacity duration-500"
           style={{ maxHeight: "calc(100vh - 160px)" }}
-          priority={currentIndex < 2}
-          sizes="85vw"
         />
 
         {/* Next arrow */}
@@ -156,10 +152,13 @@ export default function CinemaViewer({ photos }: CinemaViewerProps) {
           className="flex items-center justify-center gap-1 md:gap-1.5 overflow-x-auto px-6 cinema-thumbstrip"
         >
           {photos.map((p, i) => {
-            const thumbW =
-              p.width && p.height
-                ? Math.round((p.width / p.height) * THUMB_H)
-                : THUMB_H;
+            const ratio =
+              Number.isFinite(p.width) &&
+              Number.isFinite(p.height) &&
+              p.height > 0
+                ? p.width / p.height
+                : 1;
+            const thumbW = Math.round(ratio * THUMB_H);
             return (
               <button
                 key={p.id}
@@ -170,14 +169,12 @@ export default function CinemaViewer({ photos }: CinemaViewerProps) {
                     : "opacity-20 hover:opacity-45"
                 }`}
               >
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={p.cloudinaryUrl}
                   alt=""
-                  width={thumbW}
-                  height={THUMB_H}
                   className="block object-cover"
                   style={{ height: THUMB_H, width: thumbW }}
-                  sizes="80px"
                   loading="lazy"
                 />
               </button>
