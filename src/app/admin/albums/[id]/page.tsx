@@ -271,7 +271,7 @@ export default function AlbumDetailPage() {
   }
 
   if (loading || !album) {
-    return <div className="text-muted">Loading album...</div>;
+    return <div className="text-gray-500">Loading album...</div>;
   }
 
   const photos = album.photos.map((pa) => pa.photo);
@@ -283,7 +283,7 @@ export default function AlbumDetailPage() {
       <div className="mb-8">
         <Link
           href="/admin/albums"
-          className="text-xs text-muted hover:text-foreground transition-colors inline-flex items-center gap-1 mb-3"
+          className="text-xs text-gray-500 hover:text-gray-900 transition-colors inline-flex items-center gap-1 mb-3"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -312,7 +312,7 @@ export default function AlbumDetailPage() {
                   setAlbumForm({ ...albumForm, name: e.target.value })
                 }
                 placeholder="Album name"
-                className="flex-1 text-sm border border-gray-200 px-3 py-2 rounded focus:outline-none focus:border-foreground"
+                className="flex-1 text-sm border border-gray-200 px-3 py-2 rounded focus:outline-none focus:border-gray-900"
               />
               <input
                 type="text"
@@ -321,9 +321,9 @@ export default function AlbumDetailPage() {
                   setAlbumForm({ ...albumForm, description: e.target.value })
                 }
                 placeholder="Description"
-                className="flex-1 text-sm border border-gray-200 px-3 py-2 rounded focus:outline-none focus:border-foreground"
+                className="flex-1 text-sm border border-gray-200 px-3 py-2 rounded focus:outline-none focus:border-gray-900"
               />
-              <label className="flex items-center gap-1.5 text-xs text-muted whitespace-nowrap">
+              <label className="flex items-center gap-1.5 text-xs text-gray-500 whitespace-nowrap">
                 Sort:
                 <input
                   type="number"
@@ -334,20 +334,20 @@ export default function AlbumDetailPage() {
                       sortOrder: parseInt(e.target.value) || 0,
                     })
                   }
-                  className="w-16 text-sm border border-gray-200 px-2 py-1.5 rounded focus:outline-none focus:border-foreground"
+                  className="w-16 text-sm border border-gray-200 px-2 py-1.5 rounded focus:outline-none focus:border-gray-900"
                 />
               </label>
             </div>
             <div className="flex gap-2">
               <button
                 onClick={saveAlbumEdit}
-                className="px-4 py-1.5 bg-foreground text-white text-xs tracking-widest uppercase hover:bg-foreground/90 transition-colors"
+                className="px-4 py-1.5 bg-gray-900 text-white text-xs tracking-widest uppercase hover:bg-gray-800 transition-colors"
               >
                 Save
               </button>
               <button
                 onClick={() => setEditingAlbum(false)}
-                className="px-4 py-1.5 border border-gray-200 text-xs tracking-widest uppercase hover:border-foreground transition-colors"
+                className="px-4 py-1.5 border border-gray-200 text-xs tracking-widest uppercase hover:border-gray-900 transition-colors"
               >
                 Cancel
               </button>
@@ -358,7 +358,7 @@ export default function AlbumDetailPage() {
             <h1 className="text-2xl font-heading">{album.name}</h1>
             <button
               onClick={startEditingAlbum}
-              className="p-1.5 text-muted hover:text-foreground transition-colors"
+              className="p-1.5 text-gray-500 hover:text-gray-900 transition-colors"
               title="Edit album details"
             >
               <svg
@@ -379,13 +379,13 @@ export default function AlbumDetailPage() {
           </div>
         )}
         {!editingAlbum && album.description && (
-          <p className="text-sm text-muted mt-1">{album.description}</p>
+          <p className="text-sm text-gray-500 mt-1">{album.description}</p>
         )}
       </div>
 
       {/* Upload section */}
       <div className="mb-8">
-        <h2 className="text-sm tracking-widest uppercase text-muted mb-3">
+        <h2 className="text-sm tracking-widest uppercase text-gray-500 mb-3">
           Add Photos
         </h2>
         <div
@@ -395,13 +395,13 @@ export default function AlbumDetailPage() {
           onDrop={handleDrop}
           className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
             dragActive
-              ? "border-foreground bg-gray-50"
+              ? "border-gray-900 bg-gray-50"
               : "border-gray-300 hover:border-gray-400"
           }`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-8 h-8 mx-auto mb-3 text-muted"
+            className="w-8 h-8 mx-auto mb-3 text-gray-500"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -413,10 +413,10 @@ export default function AlbumDetailPage() {
               d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
             />
           </svg>
-          <p className="text-sm text-muted mb-2">
+          <p className="text-sm text-gray-500 mb-2">
             Drag and drop images here, or
           </p>
-          <label className="inline-block px-4 py-1.5 border border-foreground text-xs tracking-widest uppercase cursor-pointer hover:bg-foreground hover:text-white transition-colors">
+          <label className="inline-block px-4 py-1.5 border border-gray-900 text-xs tracking-widest uppercase cursor-pointer hover:bg-gray-900 hover:text-white transition-colors">
             Browse Files
             <input
               type="file"
@@ -432,14 +432,14 @@ export default function AlbumDetailPage() {
         {files.length > 0 && (
           <div className="mt-4 space-y-2">
             <div className="flex items-center justify-between">
-              <p className="text-sm text-muted">
+              <p className="text-sm text-gray-500">
                 {files.length} {files.length === 1 ? "file" : "files"} selected
               </p>
               {pendingCount > 0 && (
                 <button
                   onClick={uploadAll}
                   disabled={saving}
-                  className="px-6 py-2 bg-foreground text-white text-xs tracking-widest uppercase hover:bg-foreground/90 transition-colors disabled:opacity-50"
+                  className="px-6 py-2 bg-gray-900 text-white text-xs tracking-widest uppercase hover:bg-gray-800 transition-colors disabled:opacity-50"
                 >
                   {saving
                     ? "Uploading..."
@@ -473,10 +473,10 @@ export default function AlbumDetailPage() {
                   onChange={(e) => updateFile(index, { title: e.target.value })}
                   disabled={file.uploaded}
                   placeholder="Title"
-                  className="flex-1 text-sm border border-gray-200 px-2 py-1 rounded focus:outline-none focus:border-foreground disabled:bg-gray-50"
+                  className="flex-1 text-sm border border-gray-200 px-2 py-1 rounded focus:outline-none focus:border-gray-900 disabled:bg-gray-50"
                 />
                 {file.uploading && (
-                  <span className="text-xs text-muted">Uploading...</span>
+                  <span className="text-xs text-gray-500">Uploading...</span>
                 )}
                 {file.uploaded && (
                   <span className="text-xs text-green-600">Done</span>
@@ -487,7 +487,7 @@ export default function AlbumDetailPage() {
                 {!file.uploaded && (
                   <button
                     onClick={() => removeFile(index)}
-                    className="text-muted hover:text-foreground p-1"
+                    className="text-gray-500 hover:text-gray-900 p-1"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -512,12 +512,12 @@ export default function AlbumDetailPage() {
       </div>
 
       {/* Photos grid */}
-      <h2 className="text-sm tracking-widest uppercase text-muted mb-3">
+      <h2 className="text-sm tracking-widest uppercase text-gray-500 mb-3">
         Photos ({photos.length})
       </h2>
 
       {photos.length === 0 ? (
-        <p className="text-muted text-sm">
+        <p className="text-gray-500 text-sm">
           No photos in this album yet. Upload some above.
         </p>
       ) : (
@@ -547,7 +547,7 @@ export default function AlbumDetailPage() {
                         setPhotoForm({ ...photoForm, title: e.target.value })
                       }
                       placeholder="Title"
-                      className="w-full text-sm border border-gray-200 px-3 py-2 rounded focus:outline-none focus:border-foreground"
+                      className="w-full text-sm border border-gray-200 px-3 py-2 rounded focus:outline-none focus:border-gray-900"
                     />
                     <textarea
                       value={photoForm.description}
@@ -559,10 +559,10 @@ export default function AlbumDetailPage() {
                       }
                       placeholder="Description"
                       rows={2}
-                      className="w-full text-sm border border-gray-200 px-3 py-2 rounded focus:outline-none focus:border-foreground resize-none"
+                      className="w-full text-sm border border-gray-200 px-3 py-2 rounded focus:outline-none focus:border-gray-900 resize-none"
                     />
                     <div className="flex flex-wrap gap-3 items-center">
-                      <label className="text-xs text-muted">
+                      <label className="text-xs text-gray-500">
                         Sort:
                         <input
                           type="number"
@@ -573,10 +573,10 @@ export default function AlbumDetailPage() {
                               sortOrder: parseInt(e.target.value) || 0,
                             })
                           }
-                          className="w-16 ml-2 text-sm border border-gray-200 px-2 py-1 rounded focus:outline-none focus:border-foreground"
+                          className="w-16 ml-2 text-sm border border-gray-200 px-2 py-1 rounded focus:outline-none focus:border-gray-900"
                         />
                       </label>
-                      <label className="flex items-center gap-1.5 text-xs text-muted">
+                      <label className="flex items-center gap-1.5 text-xs text-gray-500">
                         <input
                           type="checkbox"
                           checked={photoForm.isFeatured}
@@ -593,13 +593,13 @@ export default function AlbumDetailPage() {
                     <div className="flex gap-2">
                       <button
                         onClick={savePhotoEdit}
-                        className="px-4 py-1.5 bg-foreground text-white text-xs tracking-widest uppercase hover:bg-foreground/90 transition-colors"
+                        className="px-4 py-1.5 bg-gray-900 text-white text-xs tracking-widest uppercase hover:bg-gray-800 transition-colors"
                       >
                         Save
                       </button>
                       <button
                         onClick={() => setEditingPhotoId(null)}
-                        className="px-4 py-1.5 border border-gray-200 text-xs tracking-widest uppercase hover:border-foreground transition-colors"
+                        className="px-4 py-1.5 border border-gray-200 text-xs tracking-widest uppercase hover:border-gray-900 transition-colors"
                       >
                         Cancel
                       </button>
@@ -705,7 +705,7 @@ export default function AlbumDetailPage() {
                     {/* Edit */}
                     <button
                       onClick={() => startEditingPhoto(photo)}
-                      className="p-1.5 text-muted hover:text-foreground transition-colors"
+                      className="p-1.5 text-gray-500 hover:text-gray-900 transition-colors"
                       title="Edit"
                     >
                       <svg
@@ -726,7 +726,7 @@ export default function AlbumDetailPage() {
                     {/* Remove from album */}
                     <button
                       onClick={() => removePhotoFromAlbum(photo.id)}
-                      className="p-1.5 text-muted hover:text-orange-500 transition-colors"
+                      className="p-1.5 text-gray-500 hover:text-orange-500 transition-colors"
                       title="Remove from album"
                     >
                       <svg
@@ -747,7 +747,7 @@ export default function AlbumDetailPage() {
                     {/* Delete permanently */}
                     <button
                       onClick={() => deletePhoto(photo.id)}
-                      className="p-1.5 text-muted hover:text-red-500 transition-colors"
+                      className="p-1.5 text-gray-500 hover:text-red-500 transition-colors"
                       title="Delete permanently"
                     >
                       <svg

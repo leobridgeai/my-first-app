@@ -83,7 +83,7 @@ export default function AlbumsManagementPage() {
   }
 
   if (loading) {
-    return <div className="text-muted">Loading albums...</div>;
+    return <div className="text-gray-500">Loading albums...</div>;
   }
 
   return (
@@ -95,7 +95,7 @@ export default function AlbumsManagementPage() {
         onSubmit={createAlbum}
         className="bg-white rounded border border-gray-200 p-4 mb-8"
       >
-        <h2 className="text-sm tracking-widest uppercase text-muted mb-3">
+        <h2 className="text-sm tracking-widest uppercase text-gray-500 mb-3">
           Create New Album
         </h2>
         {error && (
@@ -109,7 +109,7 @@ export default function AlbumsManagementPage() {
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
             placeholder="Album name"
-            className="flex-1 text-sm border border-gray-200 px-3 py-2 rounded focus:outline-none focus:border-foreground"
+            className="flex-1 text-sm border border-gray-200 px-3 py-2 rounded focus:outline-none focus:border-gray-900"
             required
           />
           <input
@@ -117,11 +117,11 @@ export default function AlbumsManagementPage() {
             value={newDescription}
             onChange={(e) => setNewDescription(e.target.value)}
             placeholder="Description (optional)"
-            className="flex-1 text-sm border border-gray-200 px-3 py-2 rounded focus:outline-none focus:border-foreground"
+            className="flex-1 text-sm border border-gray-200 px-3 py-2 rounded focus:outline-none focus:border-gray-900"
           />
           <button
             type="submit"
-            className="px-6 py-2 bg-foreground text-white text-xs tracking-widest uppercase hover:bg-foreground/90 transition-colors whitespace-nowrap"
+            className="px-6 py-2 bg-gray-900 text-white text-xs tracking-widest uppercase hover:bg-gray-800 transition-colors whitespace-nowrap"
           >
             Create
           </button>
@@ -130,7 +130,7 @@ export default function AlbumsManagementPage() {
 
       {/* Album grid */}
       {albums.length === 0 ? (
-        <p className="text-muted">
+        <p className="text-gray-500">
           No albums yet. Create your first one above.
         </p>
       ) : (
@@ -143,7 +143,7 @@ export default function AlbumsManagementPage() {
               <Link
                 key={album.id}
                 href={`/admin/albums/${album.id}`}
-                className="bg-white rounded border border-gray-200 overflow-hidden hover:border-foreground transition-colors group"
+                className="bg-white rounded border border-gray-200 overflow-hidden hover:border-gray-900 transition-colors group"
               >
                 {/* Cover image */}
                 <div className="relative aspect-[3/2] bg-gray-100">
@@ -178,17 +178,17 @@ export default function AlbumsManagementPage() {
                 {/* Album info */}
                 <div className="p-3 flex items-center gap-3">
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm group-hover:text-foreground truncate">
+                    <p className="font-medium text-sm group-hover:text-gray-900 truncate">
                       {album.name}
                     </p>
-                    <p className="text-xs text-muted mt-0.5">
+                    <p className="text-xs text-gray-500 mt-0.5">
                       {album._count.photos}{" "}
                       {album._count.photos === 1 ? "photo" : "photos"}
                     </p>
                   </div>
                   <button
                     onClick={(e) => deleteAlbum(e, album.id, album.name)}
-                    className="p-1.5 text-muted hover:text-red-500 transition-colors flex-shrink-0"
+                    className="p-1.5 text-gray-500 hover:text-red-500 transition-colors flex-shrink-0"
                     title="Delete album"
                   >
                     <svg

@@ -1,129 +1,59 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import PhotoGrid from "@/components/PhotoGrid";
-
-interface Photo {
-  id: string;
-  title: string | null;
-  description: string | null;
-  cloudinaryUrl: string;
-  width: number;
-  height: number;
-}
 
 interface HomeClientProps {
-  featuredPhotos: Photo[];
-  recentPhotos: Photo[];
+  heroImageUrl: string | null;
+  heroPublicId: string | null;
 }
 
-export default function HomeClient({
-  featuredPhotos,
-  recentPhotos,
-}: HomeClientProps) {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    if (featuredPhotos.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % featuredPhotos.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [featuredPhotos.length]);
-
+export default function HomeClient({ heroImageUrl }: HomeClientProps) {
   return (
-    <div>
-      {/* Hero Section */}
-      <section className="relative h-[85vh] bg-gray-50 overflow-hidden">
-        {featuredPhotos.length > 0 ? (
-          <>
-            {featuredPhotos.map((photo, index) => (
-              <div
-                key={photo.id}
-                className={`absolute inset-0 transition-opacity duration-1000 ${
-                  index === currentSlide ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                <Image
-                  src={photo.cloudinaryUrl}
-                  alt={photo.title || "Featured portrait"}
-                  fill
-                  className="object-cover"
-                  priority={index === 0}
-                  sizes="100vw"
-                />
-              </div>
-            ))}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/40" />
-            <div className="absolute bottom-0 left-0 right-0 p-8 md:p-16">
-              <h1 className="text-white text-4xl md:text-6xl font-heading tracking-tight">
-                Portrait Photography
-              </h1>
-              <p className="text-white/80 mt-3 text-lg max-w-md">
-                Observing people as they are.
-              </p>
-              <Link
-                href="/portfolio"
-                className="inline-block mt-6 px-6 py-3 border border-white/60 text-white text-sm tracking-widest uppercase hover:bg-white hover:text-black transition-all duration-300"
-              >
-                View Portfolio
-              </Link>
-            </div>
-            {/* Slide indicators */}
-            {featuredPhotos.length > 1 && (
-              <div className="absolute bottom-8 right-8 md:right-16 flex gap-2">
-                {featuredPhotos.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      index === currentSlide
-                        ? "bg-white w-6"
-                        : "bg-white/40 hover:bg-white/60"
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center px-6">
-              <h1 className="text-4xl md:text-6xl font-heading tracking-tight">
-                Portrait Photography
-              </h1>
-              <p className="text-muted mt-4 text-lg max-w-md mx-auto">
-                Observing people as they are.
-              </p>
-              <Link
-                href="/portfolio"
-                className="inline-block mt-8 px-6 py-3 border border-foreground text-sm tracking-widest uppercase hover:bg-foreground hover:text-white transition-all duration-300"
-              >
-                View Portfolio
-              </Link>
-            </div>
-          </div>
-        )}
-      </section>
-
-      {/* Recent Work */}
-      {recentPhotos.length > 0 && (
-        <section className="max-w-7xl mx-auto px-6 py-20">
-          <div className="flex items-center justify-between mb-10">
-            <h2 className="text-2xl font-heading">Recent Work</h2>
-            <Link
-              href="/portfolio"
-              className="text-sm text-muted hover:text-foreground tracking-widest uppercase transition-colors"
-            >
-              View All
-            </Link>
-          </div>
-          <PhotoGrid photos={recentPhotos} layout="grid" />
-        </section>
+    <div className="relative h-screen w-full overflow-hidden bg-black">
+      {/* Full-screen hero image */}
+      {heroImageUrl ? (
+        <Image
+          src={heroImageUrl}
+          alt="Featured photograph"
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+        />
+      ) : (
+        <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 to-black" />
       )}
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/30" />
+
+      {/* Content overlay - bottom left */}
+      <div className="absolute inset-0 flex flex-col justify-end">
+        <div className="px-6 md:px-10 pb-16 md:pb-20 max-w-[1400px] mx-auto w-full">
+          <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-heading tracking-tight leading-none">
+            Portrait
+            <br />
+            Photography
+          </h1>
+          <p className="text-white/60 mt-4 text-sm md:text-base tracking-wide max-w-md">
+            Observing people as they are.
+          </p>
+          <Link
+            href="/work"
+            className="inline-block mt-8 text-[11px] tracking-[0.25em] uppercase text-white/70 hover:text-white border-b border-white/30 hover:border-white pb-1 transition-all duration-300"
+          >
+            View Work
+          </Link>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
+        <div className="w-[1px] h-8 bg-white/20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-white/60 animate-pulse" />
+        </div>
+      </div>
     </div>
   );
 }

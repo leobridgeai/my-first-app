@@ -20,8 +20,8 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-muted text-sm">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-gray-500 text-sm">Loading...</div>
       </div>
     );
   }
@@ -33,15 +33,16 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   const navItems = [
     { href: "/admin", label: "Dashboard" },
     { href: "/admin/albums", label: "Albums" },
+    { href: "/admin/settings", label: "Settings" },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 text-gray-900">
       {/* Admin header */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <Link href="/admin" className="font-heading text-lg">
+            <Link href="/admin" className="font-heading text-lg text-gray-900">
               Admin
             </Link>
             <nav className="hidden md:flex items-center gap-4">
@@ -52,11 +53,11 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
                   className={`text-xs tracking-widest uppercase px-3 py-1.5 rounded transition-colors ${
                     item.href === "/admin"
                       ? pathname === item.href
-                        ? "bg-foreground text-white"
-                        : "text-muted hover:text-foreground"
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-500 hover:text-gray-900"
                       : pathname.startsWith(item.href)
-                        ? "bg-foreground text-white"
-                        : "text-muted hover:text-foreground"
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-500 hover:text-gray-900"
                   }`}
                 >
                   {item.label}
@@ -67,13 +68,13 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="text-xs text-muted hover:text-foreground transition-colors"
+              className="text-xs text-gray-500 hover:text-gray-900 transition-colors"
             >
               View Site
             </Link>
             <button
               onClick={() => signOut({ callbackUrl: "/login" })}
-              className="text-xs text-muted hover:text-foreground transition-colors"
+              className="text-xs text-gray-500 hover:text-gray-900 transition-colors"
             >
               Sign Out
             </button>
@@ -88,11 +89,11 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
               className={`text-xs tracking-widest uppercase px-3 py-1.5 rounded whitespace-nowrap transition-colors ${
                 item.href === "/admin"
                   ? pathname === item.href
-                    ? "bg-foreground text-white"
-                    : "text-muted hover:text-foreground"
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-500 hover:text-gray-900"
                   : pathname.startsWith(item.href)
-                    ? "bg-foreground text-white"
-                    : "text-muted hover:text-foreground"
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-500 hover:text-gray-900"
               }`}
             >
               {item.label}

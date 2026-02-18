@@ -2,16 +2,18 @@ import { prisma } from "@/lib/db";
 import HomeClient from "./HomeClient";
 
 export default async function HomePage() {
-  const featuredPhotos = await prisma.photo.findMany({
-    where: { isFeatured: true },
-    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
-    take: 10,
+  const heroSetting = await prisma.siteSetting.findUnique({
+    where: { key: "heroImageUrl" },
   });
 
-  const recentPhotos = await prisma.photo.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 9,
+  const heroPublicIdSetting = await prisma.siteSetting.findUnique({
+    where: { key: "heroImagePublicId" },
   });
 
-  return <HomeClient featuredPhotos={featuredPhotos} recentPhotos={recentPhotos} />;
+  return (
+    <HomeClient
+      heroImageUrl={heroSetting?.value || null}
+      heroPublicId={heroPublicIdSetting?.value || null}
+    />
+  );
 }

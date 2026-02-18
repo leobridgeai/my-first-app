@@ -44,3 +44,8 @@ model PhotoAlbum {
 
   @@id([photoId, albumId])
 }
+
+model SiteSetting {
+  key   String @id
+  value String
+}

@@ -36,7 +36,7 @@ export default function PhotoGrid({ photos, layout = "masonry" }: PhotoGridProps
           {photos.map((photo, index) => (
             <div
               key={photo.id}
-              className="animate-slide-up group cursor-pointer overflow-hidden rounded-sm"
+              className="animate-slide-up group cursor-pointer overflow-hidden"
               style={{ animationDelay: `${index * 50}ms` }}
               onClick={() => setLightboxIndex(index)}
             >
@@ -46,14 +46,14 @@ export default function PhotoGrid({ photos, layout = "masonry" }: PhotoGridProps
                   alt={photo.title || "Portrait photo"}
                   width={photo.width}
                   height={photo.height}
-                  className="w-full h-auto transition-transform duration-500 group-hover:scale-[1.03]"
+                  className="w-full h-auto transition-transform duration-700 group-hover:scale-[1.03]"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-end">
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500 flex items-end">
                   {photo.title && (
-                    <div className="p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                      <p className="text-white text-sm font-medium">
+                    <div className="p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                      <p className="text-white text-sm">
                         {photo.title}
                       </p>
                     </div>
@@ -64,11 +64,11 @@ export default function PhotoGrid({ photos, layout = "masonry" }: PhotoGridProps
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {photos.map((photo, index) => (
             <div
               key={photo.id}
-              className="animate-slide-up group cursor-pointer overflow-hidden rounded-sm aspect-[3/4]"
+              className="animate-slide-up group cursor-pointer overflow-hidden aspect-[3/4]"
               style={{ animationDelay: `${index * 50}ms` }}
               onClick={() => setLightboxIndex(index)}
             >
@@ -77,14 +77,14 @@ export default function PhotoGrid({ photos, layout = "masonry" }: PhotoGridProps
                   src={photo.cloudinaryUrl}
                   alt={photo.title || "Portrait photo"}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-end">
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500 flex items-end">
                   {photo.title && (
-                    <div className="p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                      <p className="text-white text-sm font-medium">
+                    <div className="p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                      <p className="text-white text-sm">
                         {photo.title}
                       </p>
                     </div>
