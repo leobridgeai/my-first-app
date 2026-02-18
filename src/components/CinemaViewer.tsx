@@ -12,9 +12,10 @@ interface Photo {
 
 interface CinemaViewerProps {
   photos: Photo[];
+  albumName?: string;
 }
 
-export default function CinemaViewer({ photos }: CinemaViewerProps) {
+export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const thumbsRef = useRef<HTMLDivElement>(null);
   const photo = photos[currentIndex];
@@ -84,8 +85,17 @@ export default function CinemaViewer({ photos }: CinemaViewerProps) {
 
   return (
     <div className="h-screen flex flex-col select-none">
+      {/* Album title — gallery wall label */}
+      {albumName && (
+        <div className="flex-shrink-0 pt-28 md:pt-32 pb-6 md:pb-8 px-20 md:px-32">
+          <h2 className="text-white text-2xl md:text-3xl font-bold font-[family-name:var(--font-body)] tracking-normal">
+            {albumName}
+          </h2>
+        </div>
+      )}
+
       {/* Main image area — generous margins for exhibition framing */}
-      <div className="flex-1 relative flex items-center justify-center min-h-0 px-20 md:px-32 pt-[92px] pb-4">
+      <div className={`flex-1 relative flex items-center justify-center min-h-0 px-20 md:px-32 ${albumName ? "pt-0" : "pt-[92px]"} pb-4`}>
         {/* Previous arrow */}
         {currentIndex > 0 && (
           <button

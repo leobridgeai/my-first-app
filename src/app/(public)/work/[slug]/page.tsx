@@ -45,5 +45,5 @@ export default async function AlbumPage({ params }: Props) {
     );
   }
 
-  return <CinemaViewer photos={photos} />;
+  return <CinemaViewer photos={photos} albumName={album.name} />;
 }
