@@ -157,3 +157,13 @@ h1, h2, h3, h4, h5, h6 {
 .text-glitch:hover {
   text-shadow: 2px 0 #ff0000, -2px 0 #00ffff;
 }
+
+/* Cinema viewer - hide scrollbar on filmstrip */
+.cinema-thumbstrip {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.cinema-thumbstrip::-webkit-scrollbar {
+  display: none;
+}
