@@ -84,22 +84,22 @@ export default function CinemaViewer({ photos }: CinemaViewerProps) {
 
   return (
     <div className="h-screen flex flex-col select-none">
-      {/* Main image area */}
-      <div className="flex-1 relative flex items-center justify-center min-h-0 px-14 md:px-24 pt-16">
-        {/* Previous arrow */}
+      {/* Main image area — generous margins for exhibition framing */}
+      <div className="flex-1 relative flex items-center justify-center min-h-0 px-20 md:px-32 pt-[92px] pb-4">
+        {/* Previous arrow — nearly invisible, inside image margins */}
         {currentIndex > 0 && (
           <button
             onClick={goPrev}
-            className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-10 text-white/10 hover:text-white/50 transition-colors duration-500 p-2"
+            className="absolute left-6 md:left-14 top-1/2 -translate-y-1/2 z-10 text-white/[0.08] hover:text-white/30 transition-opacity duration-700 p-3"
             aria-label="Previous"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5"
+              className="w-6 h-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={1}
+              strokeWidth={0.75}
             >
               <path
                 strokeLinecap="round"
@@ -110,30 +110,30 @@ export default function CinemaViewer({ photos }: CinemaViewerProps) {
           </button>
         )}
 
-        {/* The photograph — projected onto the dark canvas */}
+        {/* The photograph — framed within generous black space */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           key={photo.id}
           src={photo.cloudinaryUrl}
           alt={photo.title || "Photograph"}
           className="max-w-full max-h-full object-contain transition-opacity duration-500"
-          style={{ maxHeight: "calc(100vh - 160px)" }}
+          style={{ maxHeight: "calc(100vh - 240px)", maxWidth: "calc(100vw - 200px)" }}
         />
 
-        {/* Next arrow */}
+        {/* Next arrow — nearly invisible, inside image margins */}
         {currentIndex < photos.length - 1 && (
           <button
             onClick={goNext}
-            className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-10 text-white/10 hover:text-white/50 transition-colors duration-500 p-2"
+            className="absolute right-6 md:right-14 top-1/2 -translate-y-1/2 z-10 text-white/[0.08] hover:text-white/30 transition-opacity duration-700 p-3"
             aria-label="Next"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5"
+              className="w-6 h-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={1}
+              strokeWidth={0.75}
             >
               <path
                 strokeLinecap="round"

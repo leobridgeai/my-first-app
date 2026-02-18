@@ -20,7 +20,7 @@ export default function Navigation() {
         isHome ? "bg-transparent" : "bg-black/90 backdrop-blur-sm border-b border-white/5"
       }`}
     >
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 h-[72px] flex items-center justify-between">
         <Link
           href="/"
           className="text-white text-xs md:text-sm tracking-[0.4em] uppercase font-semibold hover:opacity-70 transition-opacity text-glitch"
@@ -73,7 +73,7 @@ export default function Navigation() {
 
       {/* Mobile menu - fullscreen overlay */}
       {menuOpen && (
-        <div className="md:hidden fixed inset-0 top-16 bg-black z-40">
+        <div className="md:hidden fixed inset-0 top-[72px] bg-black z-40">
           <div className="flex flex-col items-start justify-center h-full px-8 gap-8 -mt-16">
             {links.map((link) => (
               <Link
