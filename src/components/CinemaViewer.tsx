@@ -88,7 +88,7 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
       {/* Album title — gallery wall label */}
       {albumName && (
         <div className="flex-shrink-0 pt-28 md:pt-32 pb-6 md:pb-8 px-20 md:px-32">
-          <h2 className="text-white text-2xl md:text-3xl font-bold font-[family-name:var(--font-body)] tracking-normal">
+          <h2 className="text-white text-2xl md:text-3xl font-bold tracking-normal" style={{ fontFamily: "var(--font-body), system-ui, sans-serif" }}>
             {albumName}
           </h2>
         </div>
