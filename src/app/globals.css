@@ -117,53 +117,6 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 4px;
 }
 
-/* Work page - editorial grid (2-column based) */
-.work-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 3px;
-}
-
-@media (min-width: 640px) {
-  .work-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Every tile stretches to fill its grid cell */
-.work-grid > * {
-  min-width: 0;
-}
-
-/* Hero tile - spans full width, taller */
-.work-tile-hero {
-  grid-column: 1 / -1;
-  height: 55vh;
-  min-height: 350px;
-  max-height: 550px;
-}
-
-/* Standard tile - single column */
-.work-tile-standard {
-  height: 50vh;
-  min-height: 300px;
-  max-height: 500px;
-}
-
-/* Wide tile - spans full width */
-.work-tile-wide {
-  grid-column: 1 / -1;
-  height: 45vh;
-  min-height: 300px;
-  max-height: 450px;
-}
-
-/* Half tile - each takes one column, stretches to fill */
-.work-tile-half {
-  height: 50vh;
-  min-height: 300px;
-  max-height: 500px;
-}
 
 /* Harsh image treatment */
 .photo-harsh {
