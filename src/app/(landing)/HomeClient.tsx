@@ -19,6 +19,7 @@ export default function HomeClient({ heroImageUrl }: HomeClientProps) {
           className="object-cover"
           priority
           sizes="100vw"
+          unoptimized={heroImageUrl.startsWith("/")}
         />
       ) : (
         <div className="absolute inset-0 bg-black" />

@@ -119,6 +119,7 @@ export default function AdminSettingsPage() {
               fill
               className="object-cover"
               sizes="600px"
+              unoptimized={heroImageUrl.startsWith("/")}
             />
           </div>
         ) : (
