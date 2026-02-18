@@ -116,8 +116,8 @@ export default function CinemaViewer({ photos }: CinemaViewerProps) {
           key={photo.id}
           src={photo.cloudinaryUrl}
           alt={photo.title || "Photograph"}
-          width={photo.width}
-          height={photo.height}
+          width={photo.width || 1200}
+          height={photo.height || 800}
           className="max-w-full max-h-full object-contain transition-opacity duration-500"
           style={{ maxHeight: "calc(100vh - 160px)" }}
           priority={currentIndex < 2}
@@ -156,7 +156,10 @@ export default function CinemaViewer({ photos }: CinemaViewerProps) {
           className="flex items-center justify-center gap-1 md:gap-1.5 overflow-x-auto px-6 cinema-thumbstrip"
         >
           {photos.map((p, i) => {
-            const thumbW = Math.round((p.width / p.height) * THUMB_H);
+            const thumbW =
+              p.width && p.height
+                ? Math.round((p.width / p.height) * THUMB_H)
+                : THUMB_H;
             return (
               <button
                 key={p.id}
