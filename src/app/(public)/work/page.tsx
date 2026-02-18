@@ -59,9 +59,9 @@ export default async function WorkPage() {
                         fill
                         className="object-cover photo-harsh transition-transform duration-700 group-hover:scale-[1.03]"
                         sizes={
-                          sizeClass.includes("span-2")
-                            ? "(max-width: 768px) 100vw, 66vw"
-                            : "(max-width: 768px) 100vw, 33vw"
+                          sizeClass === "work-tile-hero" || sizeClass === "work-tile-wide"
+                            ? "100vw"
+                            : "(max-width: 640px) 100vw, 50vw"
                         }
                       />
                     ) : (
@@ -111,22 +111,28 @@ export default async function WorkPage() {
 }
 
 /**
- * Returns a CSS class that determines the tile size in the editorial grid.
- * Creates a varied, magazine-style layout:
- * - First album is always large (spans 2 columns)
- * - Then alternates between standard and featured sizes
+ * Returns a CSS class that determines the tile size in the 2-column editorial grid.
+ * - 1 album: hero (full width)
+ * - 2 albums: each takes half (one column)
+ * - 3+ albums: hero first, then pairs of standard, with occasional wide for rhythm
  */
 function getTileSize(index: number, total: number): string {
   if (total === 1) return "work-tile-hero";
   if (total === 2) return "work-tile-half";
 
-  // First item is always the hero / large tile
+  // First item is always the hero (full width)
   if (index === 0) return "work-tile-hero";
 
-  // Create a repeating pattern: after the hero, cycle through
-  // [standard, standard, wide, standard, standard, wide, ...]
+  // After the hero, cycle: standard, standard, wide, standard, standard, wide...
+  // But if there's only 1 item left at a "wide" position, make it wide to fill the row
   const pos = (index - 1) % 4;
   if (pos === 2) return "work-tile-wide";
+
+  // If this is the last item and it would be alone in a row, make it wide
+  if (index === total - 1) {
+    const remaining = (total - 1) % 4;
+    if (remaining === 1 || remaining === 3) return "work-tile-wide";
+  }
 
   return "work-tile-standard";
 }

@@ -117,7 +117,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 4px;
 }
 
-/* Work page - editorial grid */
+/* Work page - editorial grid (2-column based) */
 .work-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -130,51 +130,27 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@media (min-width: 1024px) {
-  .work-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+/* Every tile stretches to fill its grid cell */
+.work-grid > * {
+  min-width: 0;
 }
 
-/* Hero tile - spans 2 columns, taller */
+/* Hero tile - spans full width, taller */
 .work-tile-hero {
   grid-column: 1 / -1;
-  height: 60vh;
-  min-height: 400px;
-  max-height: 600px;
+  height: 55vh;
+  min-height: 350px;
+  max-height: 550px;
 }
 
-@media (min-width: 640px) {
-  .work-tile-hero {
-    grid-column: span 2;
-    height: 55vh;
-  }
-}
-
-@media (min-width: 1024px) {
-  .work-tile-hero {
-    grid-column: span 2;
-    height: 50vh;
-    max-height: 550px;
-  }
-}
-
-/* Standard tile */
+/* Standard tile - single column */
 .work-tile-standard {
   height: 50vh;
   min-height: 300px;
-  max-height: 450px;
+  max-height: 500px;
 }
 
-@media (min-width: 640px) {
-  .work-tile-standard {
-    height: 45vh;
-    min-height: 280px;
-    max-height: 400px;
-  }
-}
-
-/* Wide tile - spans 2 columns */
+/* Wide tile - spans full width */
 .work-tile-wide {
   grid-column: 1 / -1;
   height: 45vh;
@@ -182,22 +158,7 @@ h1, h2, h3, h4, h5, h6 {
   max-height: 450px;
 }
 
-@media (min-width: 640px) {
-  .work-tile-wide {
-    grid-column: span 2;
-    height: 40vh;
-  }
-}
-
-@media (min-width: 1024px) {
-  .work-tile-wide {
-    grid-column: span 2;
-    height: 45vh;
-    max-height: 450px;
-  }
-}
-
-/* Half tile - for 2-album layout */
+/* Half tile - each takes one column, stretches to fill */
 .work-tile-half {
   height: 50vh;
   min-height: 300px;
