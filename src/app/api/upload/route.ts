@@ -4,7 +4,7 @@ import cloudinary from "@/lib/cloudinary";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
-import imageSize from "image-size";
+
 
 function uploadToCloudinary(
   buffer: Buffer
@@ -51,21 +51,11 @@ function saveLocally(buffer: Buffer, originalName: string) {
     const filePath = path.join(uploadsDir, filename);
     await writeFile(filePath, buffer);
 
-    let width = 0;
-    let height = 0;
-    try {
-      const dimensions = imageSize(buffer);
-      width = dimensions.width ?? 0;
-      height = dimensions.height ?? 0;
-    } catch {
-      // ignore
-    }
-
     return {
       publicId: `local/${filename}`,
       url: `/uploads/${filename}`,
-      width,
-      height,
+      width: 0,
+      height: 0,
     };
   })();
 }
