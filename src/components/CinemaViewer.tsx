@@ -86,20 +86,20 @@ export default function CinemaViewer({ photos }: CinemaViewerProps) {
     <div className="h-screen flex flex-col select-none">
       {/* Main image area — generous margins for exhibition framing */}
       <div className="flex-1 relative flex items-center justify-center min-h-0 px-20 md:px-32 pt-[92px] pb-4">
-        {/* Previous arrow — nearly invisible, inside image margins */}
+        {/* Previous arrow */}
         {currentIndex > 0 && (
           <button
             onClick={goPrev}
-            className="absolute left-6 md:left-14 top-1/2 -translate-y-1/2 z-10 text-white/[0.08] hover:text-white/30 transition-opacity duration-700 p-3"
+            className="absolute left-6 md:left-14 top-1/2 -translate-y-1/2 z-10 text-white/25 hover:text-white/50 transition-opacity duration-500 p-3"
             aria-label="Previous"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6"
+              className="w-7 h-7"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={0.75}
+              strokeWidth={1}
             >
               <path
                 strokeLinecap="round"
@@ -120,20 +120,20 @@ export default function CinemaViewer({ photos }: CinemaViewerProps) {
           style={{ maxHeight: "calc(100vh - 240px)", maxWidth: "calc(100vw - 200px)" }}
         />
 
-        {/* Next arrow — nearly invisible, inside image margins */}
+        {/* Next arrow */}
         {currentIndex < photos.length - 1 && (
           <button
             onClick={goNext}
-            className="absolute right-6 md:right-14 top-1/2 -translate-y-1/2 z-10 text-white/[0.08] hover:text-white/30 transition-opacity duration-700 p-3"
+            className="absolute right-6 md:right-14 top-1/2 -translate-y-1/2 z-10 text-white/25 hover:text-white/50 transition-opacity duration-500 p-3"
             aria-label="Next"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6"
+              className="w-7 h-7"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={0.75}
+              strokeWidth={1}
             >
               <path
                 strokeLinecap="round"
