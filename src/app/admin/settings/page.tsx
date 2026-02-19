@@ -23,7 +23,7 @@ export default function AdminSettingsPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const MAX_SIZE_MB = 4;
+    const MAX_SIZE_MB = 20;
     if (file.size > MAX_SIZE_MB * 1024 * 1024) {
       setMessage(`File is too large. Please use an image under ${MAX_SIZE_MB}MB.`);
       return;
@@ -33,28 +33,34 @@ export default function AdminSettingsPage() {
     setMessage(null);
 
     try {
+      // Get a signed upload token from our server
+      const sigRes = await fetch("/api/upload/signature", { method: "POST" });
+      if (!sigRes.ok) {
+        const err = await sigRes.json();
+        throw new Error(err.error || "Failed to get upload signature");
+      }
+      const { signature, timestamp, cloudName, apiKey, folder } =
+        await sigRes.json();
+
+      // Upload directly to Cloudinary from the browser (bypasses Vercel size limit)
       const formData = new FormData();
-      formData.append("files", file);
+      formData.append("file", file);
+      formData.append("api_key", apiKey);
+      formData.append("timestamp", String(timestamp));
+      formData.append("signature", signature);
+      formData.append("folder", folder);
 
-      const uploadRes = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const cloudRes = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        { method: "POST", body: formData }
+      );
 
-      if (!uploadRes.ok) {
-        let errorMsg = "Upload failed";
-        try {
-          const errorData = await uploadRes.json();
-          errorMsg = errorData.error || errorMsg;
-        } catch {
-          const text = await uploadRes.text();
-          if (text) errorMsg = text;
-        }
-        throw new Error(errorMsg);
+      if (!cloudRes.ok) {
+        const cloudErr = await cloudRes.json();
+        throw new Error(cloudErr.error?.message || "Cloudinary upload failed");
       }
 
-      const uploadData = await uploadRes.json();
-      const uploaded = uploadData[0];
+      const cloudData = await cloudRes.json();
 
       // Save both the URL and publicId
       setSaving(true);
@@ -64,7 +70,7 @@ export default function AdminSettingsPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             key: "heroImageUrl",
-            value: uploaded.url,
+            value: cloudData.secure_url,
           }),
         }),
         fetch("/api/settings", {
@@ -72,12 +78,12 @@ export default function AdminSettingsPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             key: "heroImagePublicId",
-            value: uploaded.publicId,
+            value: cloudData.public_id,
           }),
         }),
       ]);
 
-      setHeroImageUrl(uploaded.url);
+      setHeroImageUrl(cloudData.secure_url);
       setMessage("Hero image updated successfully");
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Failed to upload image");
