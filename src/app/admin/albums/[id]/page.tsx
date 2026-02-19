@@ -225,28 +225,44 @@ export default function AlbumDetailPage() {
       updateFile(i, { uploading: true, error: undefined });
 
       try {
+        // Get a signed upload token
+        const sigRes = await fetch("/api/upload/signature", { method: "POST" });
+        if (!sigRes.ok) {
+          const err = await sigRes.json();
+          throw new Error(err.error || "Failed to get upload signature");
+        }
+        const { signature, timestamp, cloudName, apiKey, folder } =
+          await sigRes.json();
+
+        // Upload directly to Cloudinary from the browser
         const formData = new FormData();
-        formData.append("files", file.file);
+        formData.append("file", file.file);
+        formData.append("api_key", apiKey);
+        formData.append("timestamp", String(timestamp));
+        formData.append("signature", signature);
+        formData.append("folder", folder);
 
-        const uploadRes = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
+        const cloudRes = await fetch(
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+          { method: "POST", body: formData }
+        );
 
-        if (!uploadRes.ok) {
-          const data = await uploadRes.json().catch(() => ({}));
-          throw new Error(data.error || `Upload failed (${uploadRes.status})`);
+        if (!cloudRes.ok) {
+          const cloudErr = await cloudRes.json();
+          throw new Error(
+            cloudErr.error?.message || "Cloudinary upload failed"
+          );
         }
 
-        const [result] = await uploadRes.json();
+        const result = await cloudRes.json();
 
         await fetch("/api/photos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             title: file.title || null,
-            cloudinaryPublicId: result.publicId,
-            cloudinaryUrl: result.url,
+            cloudinaryPublicId: result.public_id,
+            cloudinaryUrl: result.secure_url,
             width: result.width,
             height: result.height,
             albumIds: [id],
