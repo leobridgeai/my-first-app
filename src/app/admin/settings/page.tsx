@@ -23,6 +23,12 @@ export default function AdminSettingsPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const MAX_SIZE_MB = 4;
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      setMessage(`File is too large. Please use an image under ${MAX_SIZE_MB}MB.`);
+      return;
+    }
+
     setUploading(true);
     setMessage(null);
 
@@ -36,8 +42,15 @@ export default function AdminSettingsPage() {
       });
 
       if (!uploadRes.ok) {
-        const errorData = await uploadRes.json();
-        throw new Error(errorData.error || "Upload failed");
+        let errorMsg = "Upload failed";
+        try {
+          const errorData = await uploadRes.json();
+          errorMsg = errorData.error || errorMsg;
+        } catch {
+          const text = await uploadRes.text();
+          if (text) errorMsg = text;
+        }
+        throw new Error(errorMsg);
       }
 
       const uploadData = await uploadRes.json();
