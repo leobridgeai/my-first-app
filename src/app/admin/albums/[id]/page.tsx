@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { uploadToCloudinary } from "@/lib/upload-client";
 
 interface Photo {
   id: string;
@@ -225,20 +226,7 @@ export default function AlbumDetailPage() {
       updateFile(i, { uploading: true, error: undefined });
 
       try {
-        const formData = new FormData();
-        formData.append("files", file.file);
-
-        const uploadRes = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!uploadRes.ok) {
-          const data = await uploadRes.json().catch(() => ({}));
-          throw new Error(data.error || `Upload failed (${uploadRes.status})`);
-        }
-
-        const [result] = await uploadRes.json();
+        const result = await uploadToCloudinary(file.file);
 
         await fetch("/api/photos", {
           method: "POST",

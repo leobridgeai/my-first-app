@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
+import { uploadToCloudinary } from "@/lib/upload-client";
 
 export default function AdminSettingsPage() {
   const [heroImageUrl, setHeroImageUrl] = useState<string | null>(null);
@@ -23,22 +24,17 @@ export default function AdminSettingsPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const MAX_SIZE_MB = 20;
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      setMessage(`File is too large. Please use an image under ${MAX_SIZE_MB}MB.`);
+      return;
+    }
+
     setUploading(true);
     setMessage(null);
 
     try {
-      const formData = new FormData();
-      formData.append("files", file);
-
-      const uploadRes = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!uploadRes.ok) throw new Error("Upload failed");
-
-      const uploadData = await uploadRes.json();
-      const uploaded = uploadData[0];
+      const uploaded = await uploadToCloudinary(file);
 
       // Save both the URL and publicId
       setSaving(true);
@@ -63,8 +59,8 @@ export default function AdminSettingsPage() {
 
       setHeroImageUrl(uploaded.url);
       setMessage("Hero image updated successfully");
-    } catch {
-      setMessage("Failed to upload image");
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "Failed to upload image");
     } finally {
       setUploading(false);
       setSaving(false);
