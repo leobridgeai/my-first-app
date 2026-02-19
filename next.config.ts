@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  serverExternalPackages: [],
+  serverExternalPackages: ["@neondatabase/serverless", "@prisma/adapter-neon", "prisma"],
   experimental: {
     serverActions: {
       bodySizeLimit: "20mb",

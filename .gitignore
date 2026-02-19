@@ -30,8 +30,7 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files
-.env
+# env files (override defaults in .env.local)
 .env.local
 .env.*.local
 
@@ -47,3 +46,7 @@ next-env.d.ts
 # database
 *.db
 *.db-journal
+
+# uploaded images (keep directory structure)
+/public/uploads/*
+!/public/uploads/.gitkeep

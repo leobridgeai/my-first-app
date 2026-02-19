@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 model Album {
@@ -43,4 +43,9 @@ model PhotoAlbum {
   album   Album  @relation(fields: [albumId], references: [id], onDelete: Cascade)
 
   @@id([photoId, albumId])
+}
+
+model SiteSetting {
+  key   String @id
+  value String
 }

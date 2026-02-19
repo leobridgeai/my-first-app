@@ -31,13 +31,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6">
+    <div className="min-h-screen flex items-center justify-center px-6 bg-black">
       <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-heading text-center mb-8">Admin Login</h1>
+        <h1 className="text-2xl font-heading text-center mb-8 text-white">
+          Admin Login
+        </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4" suppressHydrationWarning>
           {error && (
-            <div className="p-3 text-sm text-red-600 bg-red-50 rounded">
+            <div className="p-3 text-sm text-red-400 bg-red-950/50 border border-red-900/50 rounded">
               {error}
             </div>
           )}
@@ -45,7 +47,7 @@ export default function LoginPage() {
           <div suppressHydrationWarning>
             <label
               htmlFor="username"
-              className="block text-xs tracking-widest uppercase text-muted mb-2"
+              className="block text-[11px] tracking-[0.25em] uppercase text-white/50 mb-2"
             >
               Username
             </label>
@@ -54,7 +56,7 @@ export default function LoginPage() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 focus:border-foreground focus:outline-none text-sm transition-colors"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 text-white focus:border-white/40 focus:outline-none text-sm transition-colors"
               required
               suppressHydrationWarning
             />
@@ -63,7 +65,7 @@ export default function LoginPage() {
           <div suppressHydrationWarning>
             <label
               htmlFor="password"
-              className="block text-xs tracking-widest uppercase text-muted mb-2"
+              className="block text-[11px] tracking-[0.25em] uppercase text-white/50 mb-2"
             >
               Password
             </label>
@@ -72,7 +74,7 @@ export default function LoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 focus:border-foreground focus:outline-none text-sm transition-colors"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 text-white focus:border-white/40 focus:outline-none text-sm transition-colors"
               required
               suppressHydrationWarning
             />
@@ -81,7 +83,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-foreground text-white text-sm tracking-widest uppercase hover:bg-foreground/90 transition-colors disabled:opacity-50"
+            className="w-full py-3 bg-white text-black text-sm tracking-widest uppercase hover:bg-white/90 transition-colors disabled:opacity-50"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>

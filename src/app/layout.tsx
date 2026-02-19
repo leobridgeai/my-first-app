@@ -49,9 +49,9 @@ const body = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Portrait Photography Portfolio",
+  title: "Portrait Photography | Raw Street Portraits",
   description:
-    "Professional portrait photography portfolio showcasing studio, outdoor, and artistic portraits.",
+    "Raw, unfiltered portrait photography. Up close. No apologies. Inspired by the confrontational street portrait style.",
 };
 
 export default function RootLayout({
@@ -61,7 +61,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${heading.variable} ${body.variable} antialiased`}>
+      <body className={`${heading.variable} ${body.variable} antialiased grain-overlay`}>
         {children}
       </body>
     </html>
