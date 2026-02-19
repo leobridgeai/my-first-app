@@ -2,13 +2,86 @@
  * Upload a file directly to Cloudinary from the browser.
  * Uses a server-signed token so the API secret stays safe.
  * Bypasses Vercel's 4.5 MB serverless body-size limit.
+ *
+ * Images are automatically compressed on the client side before
+ * uploading to stay within Cloudinary's 10 MB free-tier limit.
  */
-export async function uploadToCloudinary(file: File): Promise<{
+
+/**
+ * Compress and resize an image on the client side using Canvas.
+ * Keeps images under a target size to avoid 413 errors from Cloudinary.
+ */
+async function compressImage(
+  file: File,
+  maxDimension = 2560,
+  quality = 0.85
+): Promise<File> {
+  // Skip compression for small files or non-image types
+  if (file.size < 2 * 1024 * 1024) return file;
+  if (!file.type.startsWith("image/")) return file;
+
+  return new Promise((resolve) => {
+    const img = new window.Image();
+    img.onload = () => {
+      URL.revokeObjectURL(img.src);
+
+      let { width, height } = img;
+
+      // Scale down if either dimension exceeds the max
+      if (width > maxDimension || height > maxDimension) {
+        if (width > height) {
+          height = Math.round(height * (maxDimension / width));
+          width = maxDimension;
+        } else {
+          width = Math.round(width * (maxDimension / height));
+          height = maxDimension;
+        }
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        resolve(file); // fallback to original
+        return;
+      }
+
+      ctx.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            resolve(file); // fallback to original
+            return;
+          }
+          // Use .jpg extension to match the JPEG output
+          const name = file.name.replace(/\.[^/.]+$/, ".jpg");
+          resolve(new File([blob], name, { type: "image/jpeg" }));
+        },
+        "image/jpeg",
+        quality
+      );
+    };
+
+    img.onerror = () => {
+      resolve(file); // fallback to original on error
+    };
+
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+export async function uploadToCloudinary(rawFile: File): Promise<{
   publicId: string;
   url: string;
   width: number;
   height: number;
 }> {
+  // Compress before uploading to stay within Cloudinary limits
+  const file = await compressImage(rawFile);
+
   // 1. Get a signed upload token from our API
   const sigRes = await fetch("/api/upload/signature", { method: "POST" });
   if (!sigRes.ok) {
