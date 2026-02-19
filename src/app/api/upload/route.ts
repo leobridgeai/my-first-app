@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/api-auth";
 import cloudinary from "@/lib/cloudinary";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import { randomUUID } from "crypto";
 
 
 function uploadToCloudinary(
@@ -41,28 +38,24 @@ function uploadToCloudinary(
   });
 }
 
-function saveLocally(buffer: Buffer, originalName: string) {
-  return (async () => {
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadsDir, { recursive: true });
-
-    const ext = path.extname(originalName) || ".jpg";
-    const filename = `${randomUUID()}${ext}`;
-    const filePath = path.join(uploadsDir, filename);
-    await writeFile(filePath, buffer);
-
-    return {
-      publicId: `local/${filename}`,
-      url: `/uploads/${filename}`,
-      width: 0,
-      height: 0,
-    };
-  })();
-}
-
 export async function POST(request: NextRequest) {
   const authError = await requireAuth();
   if (authError) return authError;
+
+  const hasCloudinary =
+    process.env.CLOUDINARY_CLOUD_NAME &&
+    process.env.CLOUDINARY_API_KEY &&
+    process.env.CLOUDINARY_API_SECRET;
+
+  if (!hasCloudinary) {
+    return NextResponse.json(
+      {
+        error:
+          "Cloudinary is not configured. Please add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET environment variables.",
+      },
+      { status: 500 }
+    );
+  }
 
   try {
     const formData = await request.formData();
@@ -81,25 +74,13 @@ export async function POST(request: NextRequest) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
 
-      let uploaded: {
-        publicId: string;
-        url: string;
-        width: number;
-        height: number;
+      const cloudResult = await uploadToCloudinary(buffer);
+      const uploaded = {
+        publicId: cloudResult.public_id,
+        url: cloudResult.secure_url,
+        width: cloudResult.width,
+        height: cloudResult.height,
       };
-
-      try {
-        const cloudResult = await uploadToCloudinary(buffer);
-        uploaded = {
-          publicId: cloudResult.public_id,
-          url: cloudResult.secure_url,
-          width: cloudResult.width,
-          height: cloudResult.height,
-        };
-      } catch {
-        // Cloudinary unavailable — save locally
-        uploaded = await saveLocally(buffer, file.name);
-      }
 
       results.push({
         ...uploaded,

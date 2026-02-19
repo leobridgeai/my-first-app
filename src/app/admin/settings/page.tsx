@@ -35,7 +35,10 @@ export default function AdminSettingsPage() {
         body: formData,
       });
 
-      if (!uploadRes.ok) throw new Error("Upload failed");
+      if (!uploadRes.ok) {
+        const errorData = await uploadRes.json();
+        throw new Error(errorData.error || "Upload failed");
+      }
 
       const uploadData = await uploadRes.json();
       const uploaded = uploadData[0];
@@ -63,8 +66,8 @@ export default function AdminSettingsPage() {
 
       setHeroImageUrl(uploaded.url);
       setMessage("Hero image updated successfully");
-    } catch {
-      setMessage("Failed to upload image");
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "Failed to upload image");
     } finally {
       setUploading(false);
       setSaving(false);
