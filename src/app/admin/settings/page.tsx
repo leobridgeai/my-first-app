@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
+import { uploadToCloudinary } from "@/lib/upload-client";
 
 export default function AdminSettingsPage() {
   const [heroImageUrl, setHeroImageUrl] = useState<string | null>(null);
@@ -33,34 +34,7 @@ export default function AdminSettingsPage() {
     setMessage(null);
 
     try {
-      // Get a signed upload token from our server
-      const sigRes = await fetch("/api/upload/signature", { method: "POST" });
-      if (!sigRes.ok) {
-        const err = await sigRes.json();
-        throw new Error(err.error || "Failed to get upload signature");
-      }
-      const { signature, timestamp, cloudName, apiKey, folder } =
-        await sigRes.json();
-
-      // Upload directly to Cloudinary from the browser (bypasses Vercel size limit)
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("api_key", apiKey);
-      formData.append("timestamp", String(timestamp));
-      formData.append("signature", signature);
-      formData.append("folder", folder);
-
-      const cloudRes = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-        { method: "POST", body: formData }
-      );
-
-      if (!cloudRes.ok) {
-        const cloudErr = await cloudRes.json();
-        throw new Error(cloudErr.error?.message || "Cloudinary upload failed");
-      }
-
-      const cloudData = await cloudRes.json();
+      const uploaded = await uploadToCloudinary(file);
 
       // Save both the URL and publicId
       setSaving(true);
@@ -70,7 +44,7 @@ export default function AdminSettingsPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             key: "heroImageUrl",
-            value: cloudData.secure_url,
+            value: uploaded.url,
           }),
         }),
         fetch("/api/settings", {
@@ -78,12 +52,12 @@ export default function AdminSettingsPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             key: "heroImagePublicId",
-            value: cloudData.public_id,
+            value: uploaded.publicId,
           }),
         }),
       ]);
 
-      setHeroImageUrl(cloudData.secure_url);
+      setHeroImageUrl(uploaded.url);
       setMessage("Hero image updated successfully");
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Failed to upload image");

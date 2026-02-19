@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { uploadToCloudinary } from "@/lib/upload-client";
 
 interface Photo {
   id: string;
@@ -225,44 +226,15 @@ export default function AlbumDetailPage() {
       updateFile(i, { uploading: true, error: undefined });
 
       try {
-        // Get a signed upload token
-        const sigRes = await fetch("/api/upload/signature", { method: "POST" });
-        if (!sigRes.ok) {
-          const err = await sigRes.json();
-          throw new Error(err.error || "Failed to get upload signature");
-        }
-        const { signature, timestamp, cloudName, apiKey, folder } =
-          await sigRes.json();
-
-        // Upload directly to Cloudinary from the browser
-        const formData = new FormData();
-        formData.append("file", file.file);
-        formData.append("api_key", apiKey);
-        formData.append("timestamp", String(timestamp));
-        formData.append("signature", signature);
-        formData.append("folder", folder);
-
-        const cloudRes = await fetch(
-          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-          { method: "POST", body: formData }
-        );
-
-        if (!cloudRes.ok) {
-          const cloudErr = await cloudRes.json();
-          throw new Error(
-            cloudErr.error?.message || "Cloudinary upload failed"
-          );
-        }
-
-        const result = await cloudRes.json();
+        const result = await uploadToCloudinary(file.file);
 
         await fetch("/api/photos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             title: file.title || null,
-            cloudinaryPublicId: result.public_id,
-            cloudinaryUrl: result.secure_url,
+            cloudinaryPublicId: result.publicId,
+            cloudinaryUrl: result.url,
             width: result.width,
             height: result.height,
             albumIds: [id],
