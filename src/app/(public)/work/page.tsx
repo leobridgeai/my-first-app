@@ -2,6 +2,8 @@ import { prisma } from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Work | Raw Street Portraits",
 };
