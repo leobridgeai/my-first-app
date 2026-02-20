@@ -5,7 +5,9 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Work | Raw Street Portraits",
+  title: "Work",
+  description:
+    "Photography collections by Leonard Canitrot. Raw, confrontational street portraits.",
 };
 
 // Scattered positioning for single-image rows
