@@ -69,6 +69,12 @@ export default async function WorkPage() {
 
   return (
     <div className="min-h-screen pt-28 md:pt-36 pb-40 md:pb-56">
+      <div className="px-6 md:px-12 mb-16 md:mb-24">
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold tracking-[-0.02em] uppercase leading-[0.85]">
+          Work
+        </h1>
+        <div className="harsh-divider w-16 md:w-24 mt-6" />
+      </div>
       {rows.map((row, rowIndex) => {
         if (row.length === 1) {
           const pos =
