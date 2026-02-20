@@ -114,16 +114,16 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
         {currentIndex > 0 && (
           <button
             onClick={goPrev}
-            className="absolute left-6 md:left-14 top-1/2 -translate-y-1/2 z-10 text-white/25 hover:text-white/50 transition-opacity duration-500 p-3"
+            className="absolute left-12 md:left-20 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white/90 transition-colors duration-300 p-2"
             aria-label="Previous photo"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-7 h-7"
+              className="w-5 h-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={1}
+              strokeWidth={1.5}
             >
               <path
                 strokeLinecap="round"
@@ -148,16 +148,16 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
         {currentIndex < photos.length - 1 && (
           <button
             onClick={goNext}
-            className="absolute right-6 md:right-14 top-1/2 -translate-y-1/2 z-10 text-white/25 hover:text-white/50 transition-opacity duration-500 p-3"
+            className="absolute right-12 md:right-20 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white/90 transition-colors duration-300 p-2"
             aria-label="Next photo"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-7 h-7"
+              className="w-5 h-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={1}
+              strokeWidth={1.5}
             >
               <path
                 strokeLinecap="round"
