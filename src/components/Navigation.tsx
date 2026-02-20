@@ -32,7 +32,7 @@ export default function Navigation() {
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 h-[72px] flex items-center justify-between">
         <Link
-          href="/"
+          href="/work"
           className="text-white text-xs md:text-sm tracking-[0.4em] uppercase font-semibold hover:opacity-70 transition-opacity text-glitch"
         >
           Portfolio
