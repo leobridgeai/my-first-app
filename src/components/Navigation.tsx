@@ -2,17 +2,27 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-
-const links = [
-  { href: "/work", label: "Work" },
-  { href: "/about", label: "About" },
-];
+import { useState, useEffect } from "react";
 
 export default function Navigation() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [aboutEnabled, setAboutEnabled] = useState(true);
   const isHome = pathname === "/";
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.aboutEnabled === "false") setAboutEnabled(false);
+      })
+      .catch(() => {});
+  }, []);
+
+  const links = [
+    { href: "/work", label: "Work" },
+    ...(aboutEnabled ? [{ href: "/about", label: "About" }] : []),
+  ];
 
   return (
     <nav

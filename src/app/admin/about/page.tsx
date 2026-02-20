@@ -11,6 +11,8 @@ export default function AdminAboutPage() {
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [aboutEnabled, setAboutEnabled] = useState(true);
+  const [togglingEnabled, setTogglingEnabled] = useState(false);
 
   const loadSettings = useCallback(async () => {
     const res = await fetch("/api/settings");
@@ -18,6 +20,7 @@ export default function AdminAboutPage() {
     if (data.aboutQuote) setQuote(data.aboutQuote);
     if (data.aboutBio) setBio(data.aboutBio);
     if (data.aboutImageUrl) setPortraitUrl(data.aboutImageUrl);
+    setAboutEnabled(data.aboutEnabled !== "false");
   }, []);
 
   useEffect(() => {
@@ -119,11 +122,53 @@ export default function AdminAboutPage() {
     }
   }
 
+  async function handleToggleEnabled() {
+    setTogglingEnabled(true);
+    setMessage(null);
+    const newValue = !aboutEnabled;
+    try {
+      await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: "aboutEnabled", value: String(newValue) }),
+      });
+      setAboutEnabled(newValue);
+      setMessage(newValue ? "About page is now visible" : "About page is now hidden");
+    } catch {
+      setMessage("Failed to update visibility");
+    } finally {
+      setTogglingEnabled(false);
+    }
+  }
+
   return (
     <div>
-      <h1 className="text-2xl font-heading mb-8">About Page</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-2xl font-heading">About Page</h1>
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-gray-500">
+            {aboutEnabled ? "Visible on site" : "Hidden from site"}
+          </span>
+          <button
+            onClick={handleToggleEnabled}
+            disabled={togglingEnabled}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+              aboutEnabled ? "bg-black" : "bg-gray-300"
+            } ${togglingEnabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+            role="switch"
+            aria-checked={aboutEnabled}
+            aria-label="Toggle About page visibility"
+          >
+            <span
+              className={`inline-block h-4 w-4 rounded-full bg-white transition-transform ${
+                aboutEnabled ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </button>
+        </div>
+      </div>
 
-      <div className="space-y-8">
+      <div className={`space-y-8 ${!aboutEnabled ? "opacity-50 pointer-events-none" : ""}`}>
         {/* Portrait Image */}
         <div className="bg-white p-6 rounded border border-gray-200">
           <h2 className="text-lg font-medium mb-1">Portrait Image</h2>
@@ -220,12 +265,12 @@ export default function AdminAboutPage() {
           >
             {saving ? "Saving..." : "Save Content"}
           </button>
-
-          {message && (
-            <p className="text-sm text-gray-600">{message}</p>
-          )}
         </div>
       </div>
+
+      {message && (
+        <p className="text-sm text-gray-600 mt-4">{message}</p>
+      )}
     </div>
   );
 }

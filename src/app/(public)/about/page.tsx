@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 
 export const metadata = {
@@ -12,7 +13,7 @@ export const dynamic = "force-dynamic";
 async function getAboutContent() {
   const settings = await prisma.siteSetting.findMany({
     where: {
-      key: { in: ["aboutQuote", "aboutBio", "aboutImageUrl"] },
+      key: { in: ["aboutQuote", "aboutBio", "aboutImageUrl", "aboutEnabled"] },
     },
   });
 
@@ -22,6 +23,7 @@ async function getAboutContent() {
   }
 
   return {
+    enabled: map.aboutEnabled !== "false",
     quote: map.aboutQuote || "",
     bio: map.aboutBio || "",
     imageUrl: map.aboutImageUrl || "",
@@ -30,6 +32,10 @@ async function getAboutContent() {
 
 export default async function AboutPage() {
   const content = await getAboutContent();
+
+  if (!content.enabled) {
+    notFound();
+  }
 
   // Split bio on blank lines to create paragraphs
   const paragraphs = content.bio
