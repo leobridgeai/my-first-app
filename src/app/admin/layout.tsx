@@ -33,6 +33,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   const navItems = [
     { href: "/admin", label: "Dashboard" },
     { href: "/admin/albums", label: "Albums" },
+    { href: "/admin/about", label: "About" },
     { href: "/admin/settings", label: "Settings" },
   ];
 
