@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 
 export const dynamic = "force-dynamic";
 
@@ -96,7 +97,7 @@ export default async function WorkPage() {
               >
                 {coverPhoto ? (
                   <Image
-                    src={coverPhoto.cloudinaryUrl}
+                    src={optimizeCloudinaryUrl(coverPhoto.cloudinaryUrl, { width: pos.width * 2 })}
                     alt={album.name}
                     width={coverPhoto.width}
                     height={coverPhoto.height}
@@ -135,7 +136,7 @@ export default async function WorkPage() {
                   >
                     {coverPhoto ? (
                       <Image
-                        src={coverPhoto.cloudinaryUrl}
+                        src={optimizeCloudinaryUrl(coverPhoto.cloudinaryUrl, { width: w * 2 })}
                         alt={album.name}
                         width={coverPhoto.width}
                         height={coverPhoto.height}

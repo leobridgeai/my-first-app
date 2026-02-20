@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Lightbox from "./Lightbox";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 
 interface Photo {
   id: string;
@@ -42,7 +43,7 @@ export default function PhotoGrid({ photos, layout = "masonry" }: PhotoGridProps
             >
               <div className="relative overflow-hidden">
                 <Image
-                  src={photo.cloudinaryUrl}
+                  src={optimizeCloudinaryUrl(photo.cloudinaryUrl, { width: 800 })}
                   alt={photo.title || "Portrait"}
                   width={photo.width}
                   height={photo.height}

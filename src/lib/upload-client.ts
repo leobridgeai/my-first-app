@@ -13,11 +13,11 @@
  */
 async function compressImage(
   file: File,
-  maxDimension = 2560,
-  quality = 0.85
+  maxDimension = 2048,
+  quality = 0.82
 ): Promise<File> {
-  // Skip compression for small files or non-image types
-  if (file.size < 2 * 1024 * 1024) return file;
+  // Skip compression for files under 500KB or non-image types
+  if (file.size < 500 * 1024) return file;
   if (!file.type.startsWith("image/")) return file;
 
   return new Promise((resolve) => {
