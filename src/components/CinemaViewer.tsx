@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 
 interface Photo {
   id: string;
@@ -137,7 +138,7 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           key={photo.id}
-          src={photo.cloudinaryUrl}
+          src={optimizeCloudinaryUrl(photo.cloudinaryUrl, { width: 1600 })}
           alt={photo.title || "Photograph"}
           className="max-w-full max-h-full object-contain transition-opacity duration-500"
           style={{ maxHeight: "calc(100vh - 240px)", maxWidth: "calc(100vw - 200px)" }}
@@ -191,7 +192,7 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={p.cloudinaryUrl}
+                src={optimizeCloudinaryUrl(p.cloudinaryUrl, { width: 150, height: 150, crop: "fill" })}
                 alt=""
                 className="block object-cover"
                 style={{ height: THUMB_H, width: THUMB_W }}

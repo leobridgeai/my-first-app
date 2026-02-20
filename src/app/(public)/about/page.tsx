@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 
 export const metadata = {
   title: "About",
@@ -59,7 +60,7 @@ export default async function AboutPage() {
             <div className="aspect-[3/4] bg-surface border border-white/5 flex items-center justify-center overflow-hidden">
               {content.imageUrl ? (
                 <Image
-                  src={content.imageUrl}
+                  src={optimizeCloudinaryUrl(content.imageUrl, { width: 800 })}
                   alt="Portrait"
                   fill
                   className="object-cover"

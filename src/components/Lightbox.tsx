@@ -2,6 +2,7 @@
 
 import { useEffect, useCallback } from "react";
 import Image from "next/image";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 
 interface Photo {
   id: string;
@@ -167,7 +168,7 @@ export default function Lightbox({
         onClick={(e) => e.stopPropagation()}
       >
         <Image
-          src={photo.cloudinaryUrl}
+          src={optimizeCloudinaryUrl(photo.cloudinaryUrl, { width: 1920 })}
           alt={photo.title || "Photo"}
           width={photo.width}
           height={photo.height}

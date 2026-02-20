@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 
 interface HomeClientProps {
   heroImageUrl: string | null;
@@ -13,7 +14,7 @@ export default function HomeClient({ heroImageUrl }: HomeClientProps) {
     <div className="relative h-screen w-full overflow-hidden bg-black">
       {heroImageUrl ? (
         <Image
-          src={heroImageUrl}
+          src={optimizeCloudinaryUrl(heroImageUrl, { width: 1920 })}
           alt="Featured photograph"
           fill
           className="object-cover"
