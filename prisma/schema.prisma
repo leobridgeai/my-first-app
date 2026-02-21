@@ -43,6 +43,7 @@ model PhotoAlbum {
   album   Album  @relation(fields: [albumId], references: [id], onDelete: Cascade)
 
   @@id([photoId, albumId])
+  @@index([albumId])
 }
 
 model SiteSetting {

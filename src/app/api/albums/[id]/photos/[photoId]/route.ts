@@ -9,22 +9,27 @@ export async function DELETE(
   const authError = await requireAuth();
   if (authError) return authError;
 
-  const { id, photoId } = await params;
+  try {
+    const { id, photoId } = await params;
 
-  await prisma.photoAlbum.delete({
-    where: {
-      photoId_albumId: { photoId, albumId: id },
-    },
-  });
-
-  // Clear cover photo if the removed photo was the cover
-  const album = await prisma.album.findUnique({ where: { id } });
-  if (album?.coverPhotoId === photoId) {
-    await prisma.album.update({
-      where: { id },
-      data: { coverPhotoId: null },
+    await prisma.photoAlbum.delete({
+      where: {
+        photoId_albumId: { photoId, albumId: id },
+      },
     });
-  }
 
-  return NextResponse.json({ success: true });
+    // Clear cover photo if the removed photo was the cover
+    const album = await prisma.album.findUnique({ where: { id } });
+    if (album?.coverPhotoId === photoId) {
+      await prisma.album.update({
+        where: { id },
+        data: { coverPhotoId: null },
+      });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("DELETE /api/albums/[id]/photos/[photoId] error:", err);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
 }
