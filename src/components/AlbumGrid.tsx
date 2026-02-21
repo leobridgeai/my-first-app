@@ -1,21 +1,49 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 interface Album {
   id: string;
   title: string;
-  year?: number;
-  count?: number;
-  coverImage: string;
+  count: number;
+  coverImage: string | null;
   href: string;
-  featured?: boolean;
 }
 
-const albums: Album[] = [];
+interface ApiAlbum {
+  id: string;
+  name: string;
+  slug: string;
+  coverPhoto?: { cloudinaryUrl: string } | null;
+  photos: { photo: { cloudinaryUrl: string } }[];
+  _count: { photos: number };
+}
 
 export default function AlbumGrid() {
+  const [albums, setAlbums] = useState<Album[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/albums")
+      .then((res) => res.json())
+      .then((data: ApiAlbum[]) => {
+        const mapped = data.map((a) => ({
+          id: a.id,
+          title: a.name,
+          count: a._count.photos,
+          coverImage:
+            a.coverPhoto?.cloudinaryUrl ??
+            a.photos[0]?.photo.cloudinaryUrl ??
+            null,
+          href: `/work/${a.slug}`,
+        }));
+        setAlbums(mapped);
+        setLoaded(true);
+      });
+  }, []);
+
   return (
     <div className="min-h-screen pt-28 md:pt-36 pb-32 md:pb-48">
       {/* Page header */}
@@ -28,11 +56,17 @@ export default function AlbumGrid() {
 
       {/* Album grid */}
       <div className="px-6 md:px-10 lg:px-16 max-w-[1600px] mx-auto">
-        <div className="album-grid">
-          {albums.map((album) => (
-            <AlbumCard key={album.id} album={album} />
-          ))}
-        </div>
+        {loaded && albums.length === 0 ? (
+          <p className="text-white/30 text-sm tracking-[0.1em] uppercase font-body">
+            No albums yet
+          </p>
+        ) : (
+          <div className="album-grid">
+            {albums.map((album) => (
+              <AlbumCard key={album.id} album={album} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -42,39 +76,35 @@ function AlbumCard({ album }: { album: Album }) {
   return (
     <Link
       href={album.href}
-      className={`
+      className="
         album-card group relative block overflow-hidden
-        ${album.featured ? "album-card--featured" : ""}
         border border-white/[0.04] hover:border-white/[0.12]
         focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/50
         transition-all duration-500 ease-out
-      `}
+      "
     >
       {/* Image container */}
-      <div
-        className={`
-          relative overflow-hidden
-          ${album.featured ? "aspect-[16/10] md:aspect-[2/1]" : "aspect-[3/4] md:aspect-[4/5]"}
-        `}
-      >
-        <Image
-          src={album.coverImage}
-          alt={album.title}
-          fill
-          className="
-            object-cover
-            brightness-[0.7] contrast-[1.05]
-            group-hover:brightness-[0.85] group-hover:contrast-[1.15]
-            group-focus-visible:brightness-[0.85] group-focus-visible:contrast-[1.15]
-            transition-all duration-700 ease-out
-            scale-[1.03] group-hover:scale-100
-          "
-          sizes={
-            album.featured
-              ? "(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 66vw"
-              : "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          }
-        />
+      <div className="relative overflow-hidden aspect-[3/4] md:aspect-[4/5] bg-white/[0.03]">
+        {album.coverImage ? (
+          <Image
+            src={album.coverImage}
+            alt={album.title}
+            fill
+            className="
+              object-cover
+              brightness-[0.7] contrast-[1.05]
+              group-hover:brightness-[0.85] group-hover:contrast-[1.15]
+              group-focus-visible:brightness-[0.85] group-focus-visible:contrast-[1.15]
+              transition-all duration-700 ease-out
+              scale-[1.03] group-hover:scale-100
+            "
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-white/10 text-xs tracking-[0.15em] uppercase">No photos</span>
+          </div>
+        )}
       </div>
 
       {/* Caption */}
@@ -85,13 +115,9 @@ function AlbumCard({ album }: { album: Album }) {
           </h2>
           <span className="block h-[1px] w-0 group-hover:w-6 group-focus-visible:w-6 bg-white/30 transition-all duration-500 ease-out" />
         </div>
-        {(album.year || album.count) && (
+        {album.count > 0 && (
           <p className="text-[10px] tracking-[0.1em] text-white/15 group-hover:text-white/35 group-focus-visible:text-white/35 transition-colors duration-500 mt-1.5 font-body">
-            {album.year && <span>{album.year}</span>}
-            {album.year && album.count && (
-              <span className="mx-1.5 text-white/10">·</span>
-            )}
-            {album.count && <span>{album.count} photos</span>}
+            <span>{album.count} photos</span>
           </p>
         )}
       </div>
