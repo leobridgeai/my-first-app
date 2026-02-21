@@ -3,98 +3,55 @@
 @theme inline {
   --font-heading: var(--font-playfair);
   --font-body: var(--font-inter);
-  --color-background: #000000;
-  --color-foreground: #ffffff;
-  --color-muted: #777777;
-  --color-border: #1a1a1a;
-  --color-accent: #ffffff;
-  --color-surface: #0a0a0a;
+  --color-background: #ffffff;
+  --color-foreground: #111111;
+  --color-muted: #999999;
+  --color-border: #eeeeee;
+  --color-accent: #111111;
+  --color-surface: #fafafa;
 }
 
-/* Bruce Gilden inspired - high contrast, raw, gritty */
 body {
   background: var(--color-background);
   color: var(--color-foreground);
-  font-family: var(--font-body), system-ui, sans-serif;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading), Georgia, serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 /* Selection styling */
 ::selection {
-  background: #fff;
-  color: #000;
+  background: #111;
+  color: #fff;
 }
 
-/* Lightbox overlay */
-.lightbox-overlay {
-  animation: fadeIn 0.2s ease-out;
+/* Scrollbar styling - minimal */
+::-webkit-scrollbar {
+  width: 3px;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 0;
 }
 
-@keyframes grainShift {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-2%, -2%); }
-  20% { transform: translate(2%, 2%); }
-  30% { transform: translate(-1%, 1%); }
-  40% { transform: translate(1%, -1%); }
-  50% { transform: translate(-2%, 2%); }
-  60% { transform: translate(2%, -2%); }
-  70% { transform: translate(-1%, -1%); }
-  80% { transform: translate(1%, 1%); }
-  90% { transform: translate(-2%, 0%); }
+::-webkit-scrollbar-thumb:hover {
+  background: #999;
 }
 
-@keyframes flickerIn {
-  0% { opacity: 0; }
-  10% { opacity: 0.8; }
-  15% { opacity: 0.2; }
-  20% { opacity: 1; }
-  100% { opacity: 1; }
+/* Cinema viewer - hide scrollbar on filmstrip */
+.cinema-thumbstrip {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-@keyframes hardSlideUp {
-  from { opacity: 0; transform: translateY(40px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+.cinema-thumbstrip::-webkit-scrollbar {
+  display: none;
 }
 
-.animate-slide-up {
-  animation: hardSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.animate-flicker {
-  animation: flickerIn 0.4s ease-out both;
-}
-
-/* Film grain overlay */
-.grain-overlay::after {
-  content: "";
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
-  width: 200%;
-  height: 200%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 9999;
-  animation: grainShift 0.5s steps(10) infinite;
-  opacity: 0.5;
-}
-
-/* Masonry grid */
+/* Masonry grid (kept for admin/other contexts) */
 .masonry-grid {
   columns: 1;
   column-gap: 4px;
@@ -115,55 +72,4 @@ h1, h2, h3, h4, h5, h6 {
 .masonry-grid > * {
   break-inside: avoid;
   margin-bottom: 4px;
-}
-
-
-/* Harsh image treatment */
-.photo-harsh {
-  filter: contrast(1.1) brightness(0.95);
-  transition: filter 0.3s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.photo-harsh:hover {
-  filter: contrast(1.2) brightness(1);
-}
-
-/* Scrollbar styling - minimal */
-::-webkit-scrollbar {
-  width: 3px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 0;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #fff;
-}
-
-/* Horizontal rule style */
-.harsh-divider {
-  height: 1px;
-  background: linear-gradient(to right, #fff, transparent);
-  border: none;
-}
-
-/* Text glitch on hover */
-.text-glitch:hover {
-  text-shadow: 2px 0 #ff0000, -2px 0 #00ffff;
-}
-
-/* Cinema viewer - hide scrollbar on filmstrip */
-.cinema-thumbstrip {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.cinema-thumbstrip::-webkit-scrollbar {
-  display: none;
 }
