@@ -158,31 +158,40 @@ h1, h2, h3, h4, h5, h6 {
   text-shadow: 2px 0 #ff0000, -2px 0 #00ffff;
 }
 
-/* Album grid - responsive with featured card spans */
+/* Album grid - exhibition wall layout */
 .album-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
-  grid-auto-flow: dense;
+  gap: 1.5rem;
+}
+
+.album-card__image {
+  aspect-ratio: var(--aspect-mobile, 4/5);
 }
 
 @media (min-width: 768px) {
   .album-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    gap: 2rem;
   }
-  .album-card--featured {
-    grid-column: span 2;
+  .album-card {
+    grid-column: var(--grid-col-tablet, span 1);
+  }
+  .album-card__image {
+    aspect-ratio: var(--aspect-tablet, 4/5);
   }
 }
 
 @media (min-width: 1024px) {
   .album-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.75rem;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2.5rem;
   }
-  .album-card--featured {
-    grid-column: span 2;
+  .album-card {
+    grid-column: var(--grid-col-desktop, span 1);
+  }
+  .album-card__image {
+    aspect-ratio: var(--aspect-desktop, 4/5);
   }
 }
 
