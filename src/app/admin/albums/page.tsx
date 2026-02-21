@@ -102,23 +102,22 @@ function SortableAlbumCard({
           <button
             {...attributes}
             {...listeners}
-            className="absolute top-2 left-2 p-1.5 bg-white/80 backdrop-blur-sm rounded shadow-sm text-gray-500 hover:text-gray-900 cursor-grab active:cursor-grabbing transition-colors"
+            className="absolute top-2 left-2 p-1.5 bg-white/90 backdrop-blur-sm rounded shadow-sm text-gray-500 hover:text-gray-900 cursor-grab active:cursor-grabbing transition-colors"
             title="Drag to reorder"
             onClick={(e) => e.preventDefault()}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
+              fill="currentColor"
+              viewBox="0 0 20 20"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-              />
+              <circle cx="7" cy="4" r="1.5" />
+              <circle cx="13" cy="4" r="1.5" />
+              <circle cx="7" cy="10" r="1.5" />
+              <circle cx="13" cy="10" r="1.5" />
+              <circle cx="7" cy="16" r="1.5" />
+              <circle cx="13" cy="16" r="1.5" />
             </svg>
           </button>
         </div>

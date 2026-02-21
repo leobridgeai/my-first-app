@@ -175,22 +175,21 @@ function SortablePhotoRow({
           <button
             {...attributes}
             {...listeners}
-            className="p-1 text-gray-300 hover:text-gray-500 cursor-grab active:cursor-grabbing transition-colors flex-shrink-0"
+            className="p-1.5 text-gray-400 hover:text-gray-700 cursor-grab active:cursor-grabbing transition-colors flex-shrink-0"
             title="Drag to reorder"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
+              fill="currentColor"
+              viewBox="0 0 20 20"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-              />
+              <circle cx="7" cy="4" r="1.5" />
+              <circle cx="13" cy="4" r="1.5" />
+              <circle cx="7" cy="10" r="1.5" />
+              <circle cx="13" cy="10" r="1.5" />
+              <circle cx="7" cy="16" r="1.5" />
+              <circle cx="13" cy="16" r="1.5" />
             </svg>
           </button>
           <div className="w-16 h-16 flex-shrink-0 relative overflow-hidden rounded bg-gray-100">
