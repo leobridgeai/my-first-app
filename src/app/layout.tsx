@@ -88,7 +88,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${heading.variable} ${body.variable} antialiased`}>
+      <body className={`${heading.variable} ${body.variable} antialiased grain-overlay`}>
         {children}
       </body>
     </html>
