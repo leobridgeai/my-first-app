@@ -22,33 +22,33 @@ export default function Navigation() {
   const links = [
     { href: "/work", label: "Work" },
     ...(aboutEnabled ? [{ href: "/about", label: "About" }] : []),
-    { href: "/about", label: "Books" },
-    { href: "/about", label: "Etc" },
-    { href: "/about", label: "Contact" },
   ];
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 ${
-        isHome ? "bg-transparent" : "bg-white"
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        isHome ? "bg-transparent" : "bg-black/90 backdrop-blur-sm border-b border-white/5"
       }`}
     >
-      <div className="max-w-[960px] mx-auto px-6 md:px-10 h-[56px] flex items-center justify-between">
-        {/* Site name — quiet, not competing */}
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 h-[72px] flex items-center justify-between">
         <Link
           href="/work"
-          className="text-[11px] tracking-[0.25em] uppercase text-[#111] hover:text-[#666]"
+          className="text-white text-xs md:text-sm tracking-[0.4em] uppercase font-semibold hover:opacity-70 transition-opacity text-glitch"
         >
-          Leonard Canitrot
+          Portfolio
         </Link>
 
-        {/* Desktop navigation — plain text links */}
-        <div className="hidden md:flex items-center gap-8">
-          {links.map((link, i) => (
+        {/* Desktop navigation */}
+        <div className="hidden md:flex items-center gap-10">
+          {links.map((link) => (
             <Link
-              key={`${link.href}-${i}`}
+              key={link.href}
               href={link.href}
-              className="text-[11px] tracking-[0.15em] uppercase text-[#555] hover:text-[#111]"
+              className={`text-[10px] tracking-[0.35em] uppercase font-medium transition-all duration-200 ${
+                pathname.startsWith(link.href)
+                  ? "text-white"
+                  : "text-white/40 hover:text-white"
+              }`}
             >
               {link.label}
             </Link>
@@ -61,19 +61,19 @@ export default function Navigation() {
           className="md:hidden p-2 -mr-2"
           aria-label="Toggle menu"
         >
-          <div className="w-5 flex flex-col gap-1.5">
+          <div className="w-6 flex flex-col gap-1.5">
             <span
-              className={`block h-[1px] bg-[#111] ${
+              className={`block h-[1px] bg-white transition-all duration-300 ${
                 menuOpen ? "rotate-45 translate-y-[7px]" : ""
               }`}
             />
             <span
-              className={`block h-[1px] bg-[#111] ${
+              className={`block h-[1px] bg-white transition-all duration-300 ${
                 menuOpen ? "opacity-0" : ""
               }`}
             />
             <span
-              className={`block h-[1px] bg-[#111] ${
+              className={`block h-[1px] bg-white transition-all duration-300 ${
                 menuOpen ? "-rotate-45 -translate-y-[7px]" : ""
               }`}
             />
@@ -81,16 +81,20 @@ export default function Navigation() {
         </button>
       </div>
 
-      {/* Mobile menu — plain white overlay */}
+      {/* Mobile menu - fullscreen overlay */}
       {menuOpen && (
-        <div className="md:hidden fixed inset-0 top-[56px] bg-white z-40">
-          <div className="flex flex-col items-start px-6 pt-10 gap-6">
-            {links.map((link, i) => (
+        <div className="md:hidden fixed inset-0 top-[72px] bg-black z-40">
+          <div className="flex flex-col items-start justify-center h-full px-8 gap-8 -mt-16">
+            {links.map((link) => (
               <Link
-                key={`${link.href}-${i}`}
+                key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="text-[13px] tracking-[0.15em] uppercase text-[#555] hover:text-[#111]"
+                className={`text-4xl tracking-[0.2em] uppercase font-heading font-bold transition-opacity ${
+                  pathname.startsWith(link.href)
+                    ? "text-white"
+                    : "text-white/30 hover:text-white"
+                }`}
               >
                 {link.label}
               </Link>
