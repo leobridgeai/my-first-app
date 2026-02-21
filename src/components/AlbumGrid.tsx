@@ -1,21 +1,52 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 interface Album {
   id: string;
   title: string;
-  year?: number;
-  count?: number;
+  count: number;
   coverImage: string;
   href: string;
-  featured?: boolean;
 }
 
-const albums: Album[] = [];
+interface ApiAlbum {
+  id: string;
+  name: string;
+  slug: string;
+  coverPhoto?: { cloudinaryUrl: string } | null;
+  photos: { photo: { cloudinaryUrl: string } }[];
+  _count: { photos: number };
+}
 
 export default function AlbumGrid() {
+  const [albums, setAlbums] = useState<Album[]>([]);
+
+  useEffect(() => {
+    fetch("/api/albums")
+      .then((res) => res.json())
+      .then((data: ApiAlbum[]) => {
+        const mapped = data
+          .filter((a) => {
+            const img =
+              a.coverPhoto?.cloudinaryUrl ?? a.photos[0]?.photo.cloudinaryUrl;
+            return !!img;
+          })
+          .map((a) => ({
+            id: a.id,
+            title: a.name,
+            count: a._count.photos,
+            coverImage:
+              a.coverPhoto?.cloudinaryUrl ??
+              a.photos[0]?.photo.cloudinaryUrl,
+            href: `/work/${a.slug}`,
+          }));
+        setAlbums(mapped);
+      });
+  }, []);
+
   return (
     <div className="min-h-screen pt-28 md:pt-36 pb-32 md:pb-48">
       {/* Page header */}
@@ -42,21 +73,15 @@ function AlbumCard({ album }: { album: Album }) {
   return (
     <Link
       href={album.href}
-      className={`
+      className="
         album-card group relative block overflow-hidden
-        ${album.featured ? "album-card--featured" : ""}
         border border-white/[0.04] hover:border-white/[0.12]
         focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/50
         transition-all duration-500 ease-out
-      `}
+      "
     >
       {/* Image container */}
-      <div
-        className={`
-          relative overflow-hidden
-          ${album.featured ? "aspect-[16/10] md:aspect-[2/1]" : "aspect-[3/4] md:aspect-[4/5]"}
-        `}
-      >
+      <div className="relative overflow-hidden aspect-[3/4] md:aspect-[4/5]">
         <Image
           src={album.coverImage}
           alt={album.title}
@@ -69,11 +94,7 @@ function AlbumCard({ album }: { album: Album }) {
             transition-all duration-700 ease-out
             scale-[1.03] group-hover:scale-100
           "
-          sizes={
-            album.featured
-              ? "(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 66vw"
-              : "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          }
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       </div>
 
@@ -85,13 +106,9 @@ function AlbumCard({ album }: { album: Album }) {
           </h2>
           <span className="block h-[1px] w-0 group-hover:w-6 group-focus-visible:w-6 bg-white/30 transition-all duration-500 ease-out" />
         </div>
-        {(album.year || album.count) && (
+        {album.count > 0 && (
           <p className="text-[10px] tracking-[0.1em] text-white/15 group-hover:text-white/35 group-focus-visible:text-white/35 transition-colors duration-500 mt-1.5 font-body">
-            {album.year && <span>{album.year}</span>}
-            {album.year && album.count && (
-              <span className="mx-1.5 text-white/10">·</span>
-            )}
-            {album.count && <span>{album.count} photos</span>}
+            <span>{album.count} photos</span>
           </p>
         )}
       </div>
