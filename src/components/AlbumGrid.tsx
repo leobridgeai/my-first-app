@@ -9,6 +9,8 @@ interface Album {
   title: string;
   count: number;
   coverImage: string | null;
+  coverWidth: number;
+  coverHeight: number;
   href: string;
 }
 
@@ -23,49 +25,27 @@ interface ApiAlbum {
 
 /*
  * Deterministic layout pattern — repeating every 5 albums.
+ * Grid columns define the structural rhythm; image heights
+ * adapt naturally to each photograph's real proportions.
  *
  * Desktop (12-col grid):
  *   Row A:  [═══ 7 cols ═══] [═══ 5 cols ═══]
- *           slot 0 (hero)     slot 1 (portrait)
+ *           slot 0 (hero)     slot 1
  *   Row B:  [4 cols] [4 cols] [4 cols]
  *           slot 2   slot 3   slot 4
  *
- * Tablet (2-col grid):
- *   slot 0: span 2 (hero), slots 1–4: span 1
- *
- * Mobile (1-col):
- *   alternating portrait aspect ratios
+ * Tablet (2-col):  slot 0 spans full, slots 1–4 span 1
+ * Mobile (1-col):  all full-width
  */
 const LAYOUT_PATTERN: {
-  desktop: { gridColumn: string; aspectRatio: string };
-  tablet: { gridColumn: string; aspectRatio: string };
-  mobile: { aspectRatio: string };
+  desktop: { gridColumn: string };
+  tablet: { gridColumn: string };
 }[] = [
-  {
-    desktop: { gridColumn: "1 / span 7", aspectRatio: "4/3" },
-    tablet: { gridColumn: "1 / -1", aspectRatio: "3/2" },
-    mobile: { aspectRatio: "4/5" },
-  },
-  {
-    desktop: { gridColumn: "8 / span 5", aspectRatio: "3/4" },
-    tablet: { gridColumn: "span 1", aspectRatio: "3/4" },
-    mobile: { aspectRatio: "3/4" },
-  },
-  {
-    desktop: { gridColumn: "1 / span 4", aspectRatio: "1/1" },
-    tablet: { gridColumn: "span 1", aspectRatio: "4/5" },
-    mobile: { aspectRatio: "4/5" },
-  },
-  {
-    desktop: { gridColumn: "5 / span 4", aspectRatio: "4/5" },
-    tablet: { gridColumn: "span 1", aspectRatio: "1/1" },
-    mobile: { aspectRatio: "3/4" },
-  },
-  {
-    desktop: { gridColumn: "9 / span 4", aspectRatio: "3/2" },
-    tablet: { gridColumn: "span 1", aspectRatio: "3/2" },
-    mobile: { aspectRatio: "4/5" },
-  },
+  { desktop: { gridColumn: "1 / span 7" }, tablet: { gridColumn: "1 / -1" } },
+  { desktop: { gridColumn: "8 / span 5" }, tablet: { gridColumn: "span 1" } },
+  { desktop: { gridColumn: "1 / span 4" }, tablet: { gridColumn: "span 1" } },
+  { desktop: { gridColumn: "5 / span 4" }, tablet: { gridColumn: "span 1" } },
+  { desktop: { gridColumn: "9 / span 4" }, tablet: { gridColumn: "span 1" } },
 ];
 
 function getSlotLayout(index: number) {
@@ -88,6 +68,10 @@ export default function AlbumGrid() {
             a.coverPhoto?.cloudinaryUrl ??
             a.photos[0]?.photo.cloudinaryUrl ??
             null,
+          coverWidth:
+            a.coverPhoto?.width ?? a.photos[0]?.photo.width ?? 4,
+          coverHeight:
+            a.coverPhoto?.height ?? a.photos[0]?.photo.height ?? 5,
           href: `/work/${a.slug}`,
         }));
         setAlbums(mapped);
@@ -130,25 +114,23 @@ function AlbumCard({ album, index }: { album: Album; index: number }) {
   return (
     <Link
       href={album.href}
-      className="album-card group relative block overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/50 transition-all duration-500 ease-out"
+      className="album-card group relative block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/50 transition-all duration-500 ease-out"
       style={
         {
-          "--aspect-mobile": layout.mobile.aspectRatio,
-          "--aspect-tablet": layout.tablet.aspectRatio,
-          "--aspect-desktop": layout.desktop.aspectRatio,
           "--grid-col-tablet": layout.tablet.gridColumn,
           "--grid-col-desktop": layout.desktop.gridColumn,
         } as React.CSSProperties
       }
     >
-      {/* Image container — aspect ratio driven by CSS custom properties */}
-      <div className="album-card__image relative overflow-hidden bg-white/[0.03]">
+      {/* Image — natural proportions, no cropping */}
+      <div className="relative overflow-hidden bg-white/[0.03]">
         {album.coverImage ? (
           <Image
             src={album.coverImage}
             alt={album.title}
-            fill
-            className="object-cover brightness-[0.7] contrast-[1.05] group-hover:brightness-[0.85] group-hover:contrast-[1.15] group-focus-visible:brightness-[0.85] group-focus-visible:contrast-[1.15] transition-all duration-700 ease-out scale-[1.03] group-hover:scale-100"
+            width={album.coverWidth}
+            height={album.coverHeight}
+            className="w-full h-auto brightness-[0.7] contrast-[1.05] group-hover:brightness-[0.85] group-hover:contrast-[1.15] group-focus-visible:brightness-[0.85] group-focus-visible:contrast-[1.15] transition-all duration-700 ease-out scale-[1.02] group-hover:scale-100"
             sizes={
               isHero
                 ? "(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 60vw"
@@ -156,7 +138,10 @@ function AlbumCard({ album, index }: { album: Album; index: number }) {
             }
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div
+            className="flex items-center justify-center"
+            style={{ aspectRatio: "4/5" }}
+          >
             <span className="text-white/10 text-xs tracking-[0.15em] uppercase">
               No photos
             </span>

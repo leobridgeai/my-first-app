@@ -158,15 +158,14 @@ h1, h2, h3, h4, h5, h6 {
   text-shadow: 2px 0 #ff0000, -2px 0 #00ffff;
 }
 
-/* Album grid - exhibition wall layout */
+/* Album grid - exhibition wall layout
+ * Columns and gutters define the rhythm; image heights
+ * adapt to each photograph's natural proportions. */
 .album-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
-}
-
-.album-card__image {
-  aspect-ratio: var(--aspect-mobile, 4/5);
+  align-items: start;
 }
 
 @media (min-width: 768px) {
@@ -177,9 +176,6 @@ h1, h2, h3, h4, h5, h6 {
   .album-card {
     grid-column: var(--grid-col-tablet, span 1);
   }
-  .album-card__image {
-    aspect-ratio: var(--aspect-tablet, 4/5);
-  }
 }
 
 @media (min-width: 1024px) {
@@ -189,9 +185,6 @@ h1, h2, h3, h4, h5, h6 {
   }
   .album-card {
     grid-column: var(--grid-col-desktop, span 1);
-  }
-  .album-card__image {
-    aspect-ratio: var(--aspect-desktop, 4/5);
   }
 }
 
