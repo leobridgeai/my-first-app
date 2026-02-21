@@ -38,26 +38,17 @@ export default async function AboutPage() {
     notFound();
   }
 
-  // Split bio on blank lines to create paragraphs
   const paragraphs = content.bio
     ? content.bio.split(/\n\s*\n/).filter((p) => p.trim())
     : [];
 
   return (
-    <div className="pt-16">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-16 md:py-24">
-        {/* Bold header */}
-        <div className="mb-16 md:mb-24">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold tracking-[-0.02em] uppercase leading-[0.85]">
-            About
-          </h1>
-          <div className="harsh-divider w-16 md:w-24 mt-6" />
-        </div>
-
+    <div className="bg-white pt-[56px]">
+      <div className="max-w-[960px] mx-auto px-6 md:px-10 py-16 md:py-24">
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
           {/* Portrait */}
           <div className="relative">
-            <div className="aspect-[3/4] bg-surface border border-white/5 flex items-center justify-center overflow-hidden">
+            <div className="aspect-[3/4] bg-[#f5f5f5] flex items-center justify-center overflow-hidden">
               {content.imageUrl ? (
                 <Image
                   src={optimizeCloudinaryUrl(content.imageUrl, { width: 800 })}
@@ -67,10 +58,10 @@ export default async function AboutPage() {
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               ) : (
-                <div className="text-center text-muted">
+                <div className="text-center text-[#ccc]">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-20 h-20 mx-auto mb-3 opacity-20"
+                    className="w-20 h-20 mx-auto mb-3 opacity-30"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -82,7 +73,7 @@ export default async function AboutPage() {
                       d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
                     />
                   </svg>
-                  <p className="text-[10px] tracking-[0.3em] uppercase">
+                  <p className="text-[10px] tracking-[0.2em] uppercase">
                     Self portrait
                   </p>
                 </div>
@@ -92,22 +83,19 @@ export default async function AboutPage() {
 
           {/* Bio */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-8 tracking-tight uppercase">
-              The Photographer
-            </h2>
-            <div className="space-y-6 text-muted leading-relaxed text-[15px]">
-              {content.quote && (
-                <p className="text-white/90 text-lg md:text-xl leading-relaxed font-heading italic">
-                  &ldquo;{content.quote}&rdquo;
-                </p>
-              )}
+            {content.quote && (
+              <p className="text-[14px] leading-relaxed text-[#444] italic mb-8">
+                &ldquo;{content.quote}&rdquo;
+              </p>
+            )}
+            <div className="space-y-5 text-[#555] leading-relaxed text-[14px]">
               {paragraphs.length > 0 ? (
                 paragraphs.map((paragraph, i) => (
                   <p key={i}>{paragraph.trim()}</p>
                 ))
               ) : (
                 <>
-                  <p className="text-white/90 text-lg md:text-xl leading-relaxed font-heading italic">
+                  <p className="text-[#333] italic">
                     &ldquo;I get close because that&apos;s the only way to get
                     to the truth of a face.&rdquo;
                   </p>
@@ -122,18 +110,14 @@ export default async function AboutPage() {
                     beauty is in the imperfection, in the character lines, in the
                     unguarded moment.
                   </p>
-                  <p>
-                    High contrast. Close range. No soft focus. No flattery. Just
-                    the honest, brutal poetry of a human face.
-                  </p>
                 </>
               )}
             </div>
 
-            <div className="mt-12 pt-12 border-t border-white/10">
-              <h3 className="text-[10px] tracking-[0.35em] uppercase text-white/60 mb-6 font-semibold">
+            <div className="mt-12 pt-10 border-t border-[#eee]">
+              <p className="text-[10px] tracking-[0.2em] uppercase text-[#aaa] mb-4">
                 Approach
-              </h3>
+              </p>
               <div className="flex flex-wrap gap-2">
                 {[
                   "Street Portraits",
@@ -145,7 +129,7 @@ export default async function AboutPage() {
                 ].map((specialty) => (
                   <span
                     key={specialty}
-                    className="px-4 py-2 text-[10px] tracking-[0.2em] uppercase border border-white/10 text-white/50 hover:text-white hover:border-white/40 hover:bg-white/5 transition-all duration-200"
+                    className="px-3 py-1.5 text-[10px] tracking-[0.15em] uppercase border border-[#ddd] text-[#888] hover:text-[#333] hover:border-[#999]"
                   >
                     {specialty}
                   </span>
