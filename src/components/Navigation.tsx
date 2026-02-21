@@ -44,10 +44,10 @@ export default function Navigation() {
             <Link
               key={link.href}
               href={link.href}
-              className={`text-[10px] tracking-[0.35em] uppercase font-medium transition-all duration-200 ${
+              className={`text-[10px] tracking-[0.35em] uppercase font-medium transition-all duration-200 pb-1 border-b ${
                 pathname.startsWith(link.href)
-                  ? "text-white"
-                  : "text-white/40 hover:text-white"
+                  ? "text-white border-white/40"
+                  : "text-white/40 hover:text-white border-transparent"
               }`}
             >
               {link.label}
