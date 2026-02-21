@@ -130,7 +130,7 @@ function AlbumCard({ album, index }: { album: Album; index: number }) {
   return (
     <Link
       href={album.href}
-      className="album-card group relative block overflow-hidden border border-white/[0.04] hover:border-white/[0.12] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/50 transition-all duration-500 ease-out"
+      className="album-card group relative block overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/50 transition-all duration-500 ease-out"
       style={
         {
           "--aspect-mobile": layout.mobile.aspectRatio,
