@@ -35,7 +35,7 @@ interface ApiAlbum {
  *           slot 2   slot 3   slot 4
  *
  * Tablet (2-col):  slot 0 spans full, slots 1–4 span 1
- * Mobile (1-col):  all full-width
+ * Mobile (1-col):  Instagram-style vertical feed
  */
 const LAYOUT_PATTERN: {
   desktop: { gridColumn: string };
@@ -80,30 +80,92 @@ export default function AlbumGrid() {
   }, []);
 
   return (
-    <div className="min-h-screen pt-20 md:pt-28 pb-32 md:pb-56">
-      {/* Page header */}
-      <header className="px-8 md:px-14 lg:px-20 mb-10 md:mb-14">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold tracking-[-0.02em] uppercase leading-[0.85]">
-          Work
-        </h1>
-        <div className="harsh-divider w-12 md:w-16 mt-4" />
-      </header>
+    <>
+      {/* ===== MOBILE: Instagram-style vertical feed ===== */}
+      <div className="md:hidden min-h-screen pt-16 pb-16">
+        <header className="px-4 mb-6">
+          <h1 className="text-3xl font-heading font-bold tracking-[-0.02em] uppercase leading-[0.85]">
+            Work
+          </h1>
+          <div className="harsh-divider w-10 mt-3" />
+        </header>
 
-      {/* Album grid */}
-      <div className="px-8 md:px-14 lg:px-20 max-w-[1300px] mx-auto">
         {loaded && albums.length === 0 ? (
-          <p className="text-white/30 text-sm tracking-[0.1em] uppercase font-body">
+          <p className="px-4 text-white/30 text-sm tracking-[0.1em] uppercase font-body">
             No albums yet
           </p>
         ) : (
-          <div className="album-grid">
-            {albums.map((album, index) => (
-              <AlbumCard key={album.id} album={album} index={index} />
+          <div className="flex flex-col">
+            {albums.map((album) => (
+              <Link
+                key={album.id}
+                href={album.href}
+                className="relative block"
+              >
+                {album.coverImage ? (
+                  <Image
+                    src={album.coverImage}
+                    alt={album.title}
+                    width={album.coverWidth}
+                    height={album.coverHeight}
+                    className="w-full h-auto brightness-[0.75] contrast-[1.05]"
+                    sizes="100vw"
+                  />
+                ) : (
+                  <div
+                    className="w-full bg-white/[0.03] flex items-center justify-center"
+                    style={{ aspectRatio: "4/5" }}
+                  >
+                    <span className="text-white/10 text-xs tracking-[0.15em] uppercase">
+                      No photos
+                    </span>
+                  </div>
+                )}
+                {/* Overlay: album name + count */}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-4 pb-4 pt-12">
+                  <h2 className="text-white/90 text-sm tracking-[0.18em] uppercase font-medium">
+                    {album.title}
+                  </h2>
+                  {album.count > 0 && (
+                    <p className="text-white/40 text-[10px] tracking-[0.1em] mt-1">
+                      {album.count} photos
+                    </p>
+                  )}
+                </div>
+                {/* Thin separator */}
+                <div className="h-[2px] bg-black" />
+              </Link>
             ))}
           </div>
         )}
       </div>
-    </div>
+
+      {/* ===== DESKTOP: Existing exhibition wall grid (unchanged) ===== */}
+      <div className="hidden md:block min-h-screen pt-28 pb-56">
+        {/* Page header */}
+        <header className="px-14 lg:px-20 mb-14">
+          <h1 className="text-5xl lg:text-6xl font-heading font-bold tracking-[-0.02em] uppercase leading-[0.85]">
+            Work
+          </h1>
+          <div className="harsh-divider w-16 mt-4" />
+        </header>
+
+        {/* Album grid */}
+        <div className="px-14 lg:px-20 max-w-[1300px] mx-auto">
+          {loaded && albums.length === 0 ? (
+            <p className="text-white/30 text-sm tracking-[0.1em] uppercase font-body">
+              No albums yet
+            </p>
+          ) : (
+            <div className="album-grid">
+              {albums.map((album, index) => (
+                <AlbumCard key={album.id} album={album} index={index} />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -133,8 +195,8 @@ function AlbumCard({ album, index }: { album: Album; index: number }) {
             className="w-full h-auto brightness-[0.7] contrast-[1.05] group-hover:brightness-[0.85] group-hover:contrast-[1.15] group-focus-visible:brightness-[0.85] group-focus-visible:contrast-[1.15] transition-all duration-700 ease-out scale-[1.02] group-hover:scale-100"
             sizes={
               isLead
-                ? "(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
-                : "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                ? "(max-width: 1024px) 100vw, 50vw"
+                : "(max-width: 1024px) 50vw, 33vw"
             }
           />
         ) : (
@@ -150,13 +212,11 @@ function AlbumCard({ album, index }: { album: Album; index: number }) {
       </div>
 
       {/* Caption */}
-      <div className="py-5 md:py-6 px-1">
+      <div className="py-6 px-1">
         <div className="flex items-center gap-2">
           <h2
             className={`tracking-[0.18em] uppercase font-medium text-white/50 group-hover:text-white/90 group-focus-visible:text-white/90 transition-colors duration-500 ${
-              isLead
-                ? "text-sm md:text-base"
-                : "text-[13px] md:text-sm"
+              isLead ? "text-base" : "text-sm"
             }`}
           >
             {album.title}

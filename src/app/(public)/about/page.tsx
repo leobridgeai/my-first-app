@@ -44,14 +44,14 @@ export default async function AboutPage() {
     : [];
 
   return (
-    <div className="pt-16">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-16 md:py-24">
+    <div className="pt-14 md:pt-16">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-12 py-10 md:py-24">
         {/* Bold header */}
-        <div className="mb-16 md:mb-24">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold tracking-[-0.02em] uppercase leading-[0.85]">
+        <div className="mb-10 md:mb-24">
+          <h1 className="text-4xl md:text-7xl lg:text-8xl font-heading font-bold tracking-[-0.02em] uppercase leading-[0.85]">
             About
           </h1>
-          <div className="harsh-divider w-16 md:w-24 mt-6" />
+          <div className="harsh-divider w-12 md:w-24 mt-4 md:mt-6" />
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
