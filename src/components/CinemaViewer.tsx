@@ -23,12 +23,12 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
   const photo = photos[currentIndex];
 
   const goNext = useCallback(() => {
-    if (currentIndex < photos.length - 1) setCurrentIndex(currentIndex + 1);
-  }, [currentIndex, photos.length]);
+    setCurrentIndex((i) => (i + 1) % photos.length);
+  }, [photos.length]);
 
   const goPrev = useCallback(() => {
-    if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
-  }, [currentIndex]);
+    setCurrentIndex((i) => (i - 1 + photos.length) % photos.length);
+  }, [photos.length]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -102,36 +102,31 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
             </h2>
           )}
         </div>
-        <span className="text-white/25 text-xs tracking-[0.2em] tabular-nums">
-          {currentIndex + 1} / {photos.length}
-        </span>
       </div>
 
       {/* Main image area — generous margins for exhibition framing */}
       <div className={`flex-1 relative flex items-center justify-center min-h-0 overflow-hidden px-20 md:px-32 pt-0 pb-4`}>
         {/* Previous arrow */}
-        {currentIndex > 0 && (
-          <button
-            onClick={goPrev}
-            className="absolute left-12 md:left-20 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white/90 transition-colors duration-300 p-2"
-            aria-label="Previous photo"
+        <button
+          onClick={goPrev}
+          className="absolute left-12 md:left-20 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white/90 transition-colors duration-300 p-2"
+          aria-label="Previous photo"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.5}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-        )}
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
 
         {/* The photograph — framed within generous black space */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -144,28 +139,26 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
         />
 
         {/* Next arrow */}
-        {currentIndex < photos.length - 1 && (
-          <button
-            onClick={goNext}
-            className="absolute right-12 md:right-20 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white/90 transition-colors duration-300 p-2"
-            aria-label="Next photo"
+        <button
+          onClick={goNext}
+          className="absolute right-12 md:right-20 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white/90 transition-colors duration-300 p-2"
+          aria-label="Next photo"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.5}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
-        )}
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
       </div>
 
       {/* Thumbnail filmstrip */}
