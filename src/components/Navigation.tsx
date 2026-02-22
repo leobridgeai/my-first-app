@@ -9,6 +9,7 @@ export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [aboutEnabled, setAboutEnabled] = useState(true);
   const isHome = pathname === "/";
+  const isWork = pathname.startsWith("/work");
 
   useEffect(() => {
     fetch("/api/settings")
@@ -26,8 +27,8 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
-        isHome ? "bg-transparent" : "bg-black/90 backdrop-blur-sm border-b border-white/5"
+      className={`${isWork ? "absolute" : "fixed"} top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        isHome ? "bg-transparent" : isWork ? "bg-transparent" : "bg-black/90 backdrop-blur-sm border-b border-white/5"
       }`}
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 h-[72px] flex items-center justify-between">
