@@ -80,13 +80,13 @@ export default function AlbumGrid() {
   }, []);
 
   return (
-    <div className="min-h-screen pt-28 md:pt-40 pb-32 md:pb-56">
+    <div className="min-h-screen pt-20 md:pt-28 pb-32 md:pb-56">
       {/* Page header */}
-      <header className="px-8 md:px-14 lg:px-20 mb-20 md:mb-28">
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold tracking-[-0.02em] uppercase leading-[0.85]">
+      <header className="px-8 md:px-14 lg:px-20 mb-10 md:mb-14">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold tracking-[-0.02em] uppercase leading-[0.85]">
           Work
         </h1>
-        <div className="harsh-divider w-16 md:w-24 mt-6" />
+        <div className="harsh-divider w-12 md:w-16 mt-4" />
       </header>
 
       {/* Album grid */}
@@ -110,6 +110,7 @@ export default function AlbumGrid() {
 function AlbumCard({ album, index }: { album: Album; index: number }) {
   const layout = getSlotLayout(index);
   const isHero = index % LAYOUT_PATTERN.length === 0;
+  const isFirstRow = index % LAYOUT_PATTERN.length <= 1;
 
   return (
     <Link
@@ -122,15 +123,23 @@ function AlbumCard({ album, index }: { album: Album; index: number }) {
         } as React.CSSProperties
       }
     >
-      {/* Image — natural proportions, no cropping */}
-      <div className="relative overflow-hidden bg-white/[0.03]">
+      {/* Image — natural proportions; first-row cards capped at ~38vh on desktop */}
+      <div
+        className={`relative overflow-hidden bg-white/[0.03] ${
+          isFirstRow ? "lg:max-h-[38vh]" : ""
+        }`}
+      >
         {album.coverImage ? (
           <Image
             src={album.coverImage}
             alt={album.title}
             width={album.coverWidth}
             height={album.coverHeight}
-            className="w-full h-auto brightness-[0.7] contrast-[1.05] group-hover:brightness-[0.85] group-hover:contrast-[1.15] group-focus-visible:brightness-[0.85] group-focus-visible:contrast-[1.15] transition-all duration-700 ease-out scale-[1.02] group-hover:scale-100"
+            className={`w-full brightness-[0.7] contrast-[1.05] group-hover:brightness-[0.85] group-hover:contrast-[1.15] group-focus-visible:brightness-[0.85] group-focus-visible:contrast-[1.15] transition-all duration-700 ease-out scale-[1.02] group-hover:scale-100 ${
+              isFirstRow
+                ? "lg:h-full lg:object-cover h-auto"
+                : "h-auto"
+            }`}
             sizes={
               isHero
                 ? "(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 60vw"
