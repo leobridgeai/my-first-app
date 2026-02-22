@@ -84,7 +84,6 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
   if (!photo || photos.length === 0) return null;
 
   const THUMB_H = 72;
-  const THUMB_W = 72;
 
   return (
     <div className="h-screen flex flex-col select-none overflow-hidden">
@@ -192,10 +191,10 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={optimizeCloudinaryUrl(p.cloudinaryUrl, { width: 150, height: 150, crop: "fill" })}
+                src={optimizeCloudinaryUrl(p.cloudinaryUrl, { height: 150 })}
                 alt=""
-                className="block object-cover"
-                style={{ height: THUMB_H, width: THUMB_W }}
+                className="block"
+                style={{ height: THUMB_H, width: Math.round(THUMB_H * (p.width / p.height)) }}
                 loading="lazy"
               />
             </button>
