@@ -80,9 +80,9 @@ export default function AlbumGrid() {
   }, []);
 
   return (
-    <div className="min-h-screen pt-20 md:pt-28 pb-32 md:pb-56">
+    <div className="min-h-screen pt-16 md:pt-28 pb-32 md:pb-56">
       {/* Page header */}
-      <header className="px-8 md:px-14 lg:px-20 mb-10 md:mb-14">
+      <header className="px-5 md:px-14 lg:px-20 mb-10 md:mb-14">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold tracking-[-0.02em] uppercase leading-[0.85]">
           Work
         </h1>
@@ -90,7 +90,7 @@ export default function AlbumGrid() {
       </header>
 
       {/* Album grid */}
-      <div className="px-8 md:px-14 lg:px-20 max-w-[1300px] mx-auto">
+      <div className="px-5 md:px-14 lg:px-20 max-w-[1300px] mx-auto">
         {loaded && albums.length === 0 ? (
           <p className="text-white/30 text-sm tracking-[0.1em] uppercase font-body">
             No albums yet
