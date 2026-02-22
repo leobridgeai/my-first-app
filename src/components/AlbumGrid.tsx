@@ -29,8 +29,8 @@ interface ApiAlbum {
  * adapt naturally to each photograph's real proportions.
  *
  * Desktop (12-col grid):
- *   Row A:  [═══ 7 cols ═══] [═══ 5 cols ═══]
- *           slot 0 (hero)     slot 1
+ *   Row A:  [═══ 6 cols ═══] [═══ 6 cols ═══]
+ *           slot 0 (lead)     slot 1
  *   Row B:  [4 cols] [4 cols] [4 cols]
  *           slot 2   slot 3   slot 4
  *
@@ -41,8 +41,8 @@ const LAYOUT_PATTERN: {
   desktop: { gridColumn: string };
   tablet: { gridColumn: string };
 }[] = [
-  { desktop: { gridColumn: "1 / span 7" }, tablet: { gridColumn: "1 / -1" } },
-  { desktop: { gridColumn: "8 / span 5" }, tablet: { gridColumn: "span 1" } },
+  { desktop: { gridColumn: "1 / span 6" }, tablet: { gridColumn: "1 / -1" } },
+  { desktop: { gridColumn: "7 / span 6" }, tablet: { gridColumn: "span 1" } },
   { desktop: { gridColumn: "1 / span 4" }, tablet: { gridColumn: "span 1" } },
   { desktop: { gridColumn: "5 / span 4" }, tablet: { gridColumn: "span 1" } },
   { desktop: { gridColumn: "9 / span 4" }, tablet: { gridColumn: "span 1" } },
@@ -90,7 +90,7 @@ export default function AlbumGrid() {
       </header>
 
       {/* Album grid */}
-      <div className="px-8 md:px-14 lg:px-20 max-w-[1600px] mx-auto">
+      <div className="px-8 md:px-14 lg:px-20 max-w-[1300px] mx-auto">
         {loaded && albums.length === 0 ? (
           <p className="text-white/30 text-sm tracking-[0.1em] uppercase font-body">
             No albums yet
@@ -109,8 +109,7 @@ export default function AlbumGrid() {
 
 function AlbumCard({ album, index }: { album: Album; index: number }) {
   const layout = getSlotLayout(index);
-  const isHero = index % LAYOUT_PATTERN.length === 0;
-  const isFirstRow = index % LAYOUT_PATTERN.length <= 1;
+  const isLead = index % LAYOUT_PATTERN.length === 0;
 
   return (
     <Link
@@ -123,26 +122,18 @@ function AlbumCard({ album, index }: { album: Album; index: number }) {
         } as React.CSSProperties
       }
     >
-      {/* Image — natural proportions; first-row cards capped at ~38vh on desktop */}
-      <div
-        className={`relative overflow-hidden bg-white/[0.03] ${
-          isFirstRow ? "lg:max-h-[38vh]" : ""
-        }`}
-      >
+      {/* Image — natural proportions, no cropping */}
+      <div className="relative overflow-hidden bg-white/[0.03]">
         {album.coverImage ? (
           <Image
             src={album.coverImage}
             alt={album.title}
             width={album.coverWidth}
             height={album.coverHeight}
-            className={`w-full brightness-[0.7] contrast-[1.05] group-hover:brightness-[0.85] group-hover:contrast-[1.15] group-focus-visible:brightness-[0.85] group-focus-visible:contrast-[1.15] transition-all duration-700 ease-out scale-[1.02] group-hover:scale-100 ${
-              isFirstRow
-                ? "lg:h-full lg:object-cover h-auto"
-                : "h-auto"
-            }`}
+            className="w-full h-auto brightness-[0.7] contrast-[1.05] group-hover:brightness-[0.85] group-hover:contrast-[1.15] group-focus-visible:brightness-[0.85] group-focus-visible:contrast-[1.15] transition-all duration-700 ease-out scale-[1.02] group-hover:scale-100"
             sizes={
-              isHero
-                ? "(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 60vw"
+              isLead
+                ? "(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 50vw"
                 : "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             }
           />
@@ -163,7 +154,7 @@ function AlbumCard({ album, index }: { album: Album; index: number }) {
         <div className="flex items-center gap-2">
           <h2
             className={`tracking-[0.18em] uppercase font-medium text-white/50 group-hover:text-white/90 group-focus-visible:text-white/90 transition-colors duration-500 ${
-              isHero
+              isLead
                 ? "text-sm md:text-base"
                 : "text-[13px] md:text-sm"
             }`}
