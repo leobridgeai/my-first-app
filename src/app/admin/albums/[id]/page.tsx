@@ -420,7 +420,7 @@ export default function AlbumDetailPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: albumForm.name,
-        description: albumForm.description || null,
+        description: albumForm.description || undefined,
         sortOrder: albumForm.sortOrder,
       }),
     });

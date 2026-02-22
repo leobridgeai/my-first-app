@@ -201,7 +201,7 @@ export default function AlbumsManagementPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: newName,
-        description: newDescription || null,
+        description: newDescription || undefined,
       }),
     });
 
