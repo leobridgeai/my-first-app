@@ -91,10 +91,10 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
   return (
     <>
       {/* ===== MOBILE: Instagram-style vertical scroll feed ===== */}
-      <div className="md:hidden min-h-screen bg-black">
-        {/* Sticky header */}
-        <div className="sticky top-0 z-20 bg-black/90 backdrop-blur-sm border-b border-white/5">
-          <div className="flex items-center justify-between px-4 h-14">
+      <div className="md:hidden min-h-screen bg-black pt-14">
+        {/* Sticky header — sits just below the main nav */}
+        <div className="sticky top-0 z-30 bg-black/90 backdrop-blur-sm border-b border-white/5">
+          <div className="flex items-center justify-between px-4 h-12">
             <Link
               href="/work"
               className="text-white/50 text-xs tracking-[0.15em] uppercase flex items-center gap-2"
