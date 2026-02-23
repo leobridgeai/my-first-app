@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Navigation() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [aboutEnabled, setAboutEnabled] = useState(true);
+  const [navVisible, setNavVisible] = useState(true);
+  const lastScrollY = useRef(0);
   const isHome = pathname === "/";
   const isWork = pathname.startsWith("/work");
 
@@ -20,6 +22,32 @@ export default function Navigation() {
       .catch(() => {});
   }, []);
 
+  // Instagram-style auto-hide on scroll (mobile only)
+  useEffect(() => {
+    const handleScroll = () => {
+      // Only apply on mobile
+      if (window.innerWidth >= 768) return;
+
+      const currentY = window.scrollY;
+
+      if (currentY <= 10) {
+        setNavVisible(true);
+      } else if (currentY > lastScrollY.current + 8) {
+        // Scrolling down — hide
+        setNavVisible(false);
+        setMenuOpen(false);
+      } else if (currentY < lastScrollY.current - 8) {
+        // Scrolling up — show
+        setNavVisible(true);
+      }
+
+      lastScrollY.current = currentY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const links = [
     { href: "/work", label: "Work" },
     ...(aboutEnabled ? [{ href: "/about", label: "About" }] : []),
@@ -27,11 +55,13 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`${isWork ? "absolute" : "fixed"} top-0 left-0 right-0 z-50 transition-colors duration-300 ${
-        isHome ? "bg-transparent" : isWork ? "bg-transparent" : "bg-black/90 backdrop-blur-sm border-b border-white/5"
+      className={`fixed ${isWork ? "md:absolute" : ""} top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        navVisible ? "translate-y-0" : "-translate-y-full"
+      } ${
+        isHome ? "bg-transparent" : isWork ? "bg-black/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none" : "bg-black/90 backdrop-blur-sm border-b border-white/5"
       }`}
     >
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 h-[72px] flex items-center justify-between">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-12 h-14 md:h-[72px] flex items-center justify-between">
         <Link
           href="/work"
           className="text-white text-xs md:text-sm tracking-[0.4em] uppercase font-semibold hover:opacity-70 transition-opacity text-glitch"
@@ -84,7 +114,7 @@ export default function Navigation() {
 
       {/* Mobile menu - fullscreen overlay */}
       {menuOpen && (
-        <div className="md:hidden fixed inset-0 top-[72px] bg-black z-40">
+        <div className="md:hidden fixed inset-0 top-14 bg-black z-40">
           <div className="flex flex-col items-start justify-center h-full px-8 gap-8 -mt-16">
             {links.map((link) => (
               <Link

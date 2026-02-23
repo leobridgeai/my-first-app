@@ -44,7 +44,7 @@ export default async function AboutPage() {
     : [];
 
   return (
-    <div className="pt-14 md:pt-16">
+    <div className="pt-16 md:pt-16">
       <div className="max-w-[1400px] mx-auto px-4 md:px-12 py-10 md:py-24">
         {/* Bold header */}
         <div className="mb-10 md:mb-24">
