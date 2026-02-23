@@ -90,62 +90,26 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
 
   return (
     <>
-      {/* ===== MOBILE: Instagram-style vertical scroll feed ===== */}
-      <div className="md:hidden min-h-screen bg-black pt-14">
-        {/* Sticky header — sits just below the main nav */}
-        <div className="sticky top-0 z-30 bg-black/90 backdrop-blur-sm border-b border-white/5">
-          <div className="flex items-center justify-between px-4 h-12">
-            <Link
-              href="/work"
-              className="text-white/50 text-xs tracking-[0.15em] uppercase flex items-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-              </svg>
-              Back
-            </Link>
-            {albumName && (
-              <h2 className="text-white text-sm font-semibold tracking-wide" style={{ fontFamily: "var(--font-body), system-ui, sans-serif" }}>
-                {albumName}
-              </h2>
-            )}
-            <span className="text-white/30 text-[10px] tracking-[0.15em]">
-              {photos.length} photos
-            </span>
+      {/* ===== MOBILE: Full-screen snap-scroll viewer ===== */}
+      <div
+        className="md:hidden fixed inset-0 bg-black overflow-y-auto z-20"
+        style={{ scrollSnapType: "y mandatory" }}
+      >
+        {photos.map((p, i) => (
+          <div
+            key={p.id}
+            className="relative flex items-center justify-center"
+            style={{ height: "100dvh", scrollSnapAlign: "start" }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={optimizeCloudinaryUrl(p.cloudinaryUrl, { width: 600 })}
+              alt={p.title || "Photograph"}
+              className="max-w-full max-h-full object-contain"
+              loading={i < 2 ? "eager" : "lazy"}
+            />
           </div>
-        </div>
-
-        {/* Photo feed */}
-        <div className="pb-16">
-          {photos.map((p, i) => (
-            <div key={p.id} className="relative">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={optimizeCloudinaryUrl(p.cloudinaryUrl, { width: 800 })}
-                alt={p.title || "Photograph"}
-                className="w-full h-auto"
-                loading={i < 3 ? "eager" : "lazy"}
-              />
-              {/* Overlay: title + counter */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-4 pb-3 pt-10 flex items-end justify-between">
-                {p.title ? (
-                  <span className="text-white/80 text-[11px] tracking-[0.15em] uppercase font-medium">
-                    {p.title}
-                  </span>
-                ) : (
-                  <span />
-                )}
-                <span className="text-white/30 text-[10px] tracking-[0.2em] tabular-nums">
-                  {i + 1}/{photos.length}
-                </span>
-              </div>
-              {/* Thin separator */}
-              {i < photos.length - 1 && (
-                <div className="h-[2px] bg-black" />
-              )}
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
 
       {/* ===== DESKTOP: Existing cinema viewer (unchanged) ===== */}

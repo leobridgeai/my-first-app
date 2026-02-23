@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
@@ -10,6 +12,15 @@ interface HomeClientProps {
 }
 
 export default function HomeClient({ heroImageUrl }: HomeClientProps) {
+  const router = useRouter();
+
+  // On mobile, skip the landing page and go straight to albums
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      router.replace("/work");
+    }
+  }, [router]);
+
   return (
     <div className="relative h-screen w-full overflow-hidden bg-black">
       {heroImageUrl ? (

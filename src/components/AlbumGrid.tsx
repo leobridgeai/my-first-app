@@ -126,11 +126,6 @@ export default function AlbumGrid() {
                   <h2 className="text-white/90 text-sm tracking-[0.18em] uppercase font-medium">
                     {album.title}
                   </h2>
-                  {album.count > 0 && (
-                    <p className="text-white/40 text-[10px] tracking-[0.1em] mt-1">
-                      {album.count} photos
-                    </p>
-                  )}
                 </div>
                 {/* Thin separator */}
                 <div className="h-[2px] bg-black" />

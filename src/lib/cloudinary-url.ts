@@ -24,6 +24,8 @@ interface OptimizeOptions {
   crop?: "limit" | "fill";
   /** Quality: "auto" (default), "auto:low", "auto:eco", "auto:good", "auto:best" */
   quality?: string;
+  /** Enable progressive loading — blurry→sharp (default true) */
+  progressive?: boolean;
 }
 
 export function optimizeCloudinaryUrl(
@@ -32,9 +34,10 @@ export function optimizeCloudinaryUrl(
 ): string {
   if (!url || !url.includes("res.cloudinary.com")) return url;
 
-  const { width, height, crop = "limit", quality = "auto" } = options;
+  const { width, height, crop = "limit", quality = "auto", progressive = true } = options;
 
   const transforms: string[] = [`f_auto`, `q_${quality}`];
+  if (progressive) transforms.push("fl_progressive:semi");
   if (width) transforms.push(`w_${width}`);
   if (height) transforms.push(`h_${height}`);
   if (width || height) transforms.push(`c_${crop}`);
