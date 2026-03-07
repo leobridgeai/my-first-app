@@ -91,7 +91,7 @@ export default function AlbumGrid() {
         </header>
 
         {loaded && albums.length === 0 ? (
-          <p className="px-4 text-white/30 text-sm tracking-[0.1em] uppercase font-body">
+          <p className="px-4 text-black/30 text-sm tracking-[0.1em] uppercase font-body">
             No albums yet
           </p>
         ) : (
@@ -108,34 +108,40 @@ export default function AlbumGrid() {
                     alt={album.title}
                     width={album.coverWidth}
                     height={album.coverHeight}
-                    className="w-full h-auto brightness-[0.75] contrast-[1.05]"
+                    className="w-full h-auto"
                     sizes="100vw"
                   />
                 ) : (
                   <div
-                    className="w-full bg-white/[0.03] flex items-center justify-center"
+                    className="w-full bg-black/[0.03] flex items-center justify-center"
                     style={{ aspectRatio: "4/5" }}
                   >
-                    <span className="text-white/10 text-xs tracking-[0.15em] uppercase">
+                    <span className="text-black/10 text-xs tracking-[0.15em] uppercase">
                       No photos
                     </span>
                   </div>
                 )}
-                {/* Overlay: album name + count */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-4 pb-4 pt-12">
-                  <h2 className="text-white/90 text-sm tracking-[0.18em] uppercase font-medium">
+                {/* Overlay: album name + view hint */}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white/80 to-transparent px-4 pb-4 pt-12">
+                  <h2 className="text-black/80 text-sm tracking-[0.18em] uppercase font-medium">
                     {album.title}
                   </h2>
+                  <div className="flex items-center gap-1 text-black/40 text-[10px] tracking-[0.1em] mt-1">
+                    <span>View</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
                 </div>
                 {/* Thin separator */}
-                <div className="h-[2px] bg-black" />
+                <div className="h-[1px] bg-black/10" />
               </Link>
             ))}
           </div>
         )}
       </div>
 
-      {/* ===== DESKTOP: Existing exhibition wall grid (unchanged) ===== */}
+      {/* ===== DESKTOP: Exhibition wall grid ===== */}
       <div className="hidden md:block min-h-screen pt-28 pb-56">
         {/* Page header */}
         <header className="px-14 lg:px-20 mb-14">
@@ -148,7 +154,7 @@ export default function AlbumGrid() {
         {/* Album grid */}
         <div className="px-14 lg:px-20 max-w-[1300px] mx-auto">
           {loaded && albums.length === 0 ? (
-            <p className="text-white/30 text-sm tracking-[0.1em] uppercase font-body">
+            <p className="text-black/30 text-sm tracking-[0.1em] uppercase font-body">
               No albums yet
             </p>
           ) : (
@@ -171,7 +177,7 @@ function AlbumCard({ album, index }: { album: Album; index: number }) {
   return (
     <Link
       href={album.href}
-      className="album-card group relative block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/50 transition-all duration-500 ease-out"
+      className="album-card group relative block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black/50 transition-all duration-500 ease-out"
       style={
         {
           "--grid-col-tablet": layout.tablet.gridColumn,
@@ -180,14 +186,14 @@ function AlbumCard({ album, index }: { album: Album; index: number }) {
       }
     >
       {/* Image — natural proportions, no cropping */}
-      <div className="relative overflow-hidden bg-white/[0.03]">
+      <div className="relative overflow-hidden bg-black/[0.03]">
         {album.coverImage ? (
           <Image
             src={album.coverImage}
             alt={album.title}
             width={album.coverWidth}
             height={album.coverHeight}
-            className="w-full h-auto brightness-[0.7] contrast-[1.05] group-hover:brightness-[0.85] group-hover:contrast-[1.15] group-focus-visible:brightness-[0.85] group-focus-visible:contrast-[1.15] transition-all duration-700 ease-out scale-[1.02] group-hover:scale-100"
+            className="w-full h-auto transition-all duration-700 ease-out group-hover:scale-[1.02]"
             sizes={
               isLead
                 ? "(max-width: 1024px) 100vw, 50vw"
@@ -199,7 +205,7 @@ function AlbumCard({ album, index }: { album: Album; index: number }) {
             className="flex items-center justify-center"
             style={{ aspectRatio: "4/5" }}
           >
-            <span className="text-white/10 text-xs tracking-[0.15em] uppercase">
+            <span className="text-black/10 text-xs tracking-[0.15em] uppercase">
               No photos
             </span>
           </div>
@@ -210,16 +216,16 @@ function AlbumCard({ album, index }: { album: Album; index: number }) {
       <div className="py-6 px-1">
         <div className="flex items-center gap-2">
           <h2
-            className={`tracking-[0.18em] uppercase font-medium text-white/50 group-hover:text-white/90 group-focus-visible:text-white/90 transition-colors duration-500 ${
+            className={`tracking-[0.18em] uppercase font-medium text-black/50 group-hover:text-black/90 group-focus-visible:text-black/90 transition-colors duration-500 ${
               isLead ? "text-base" : "text-sm"
             }`}
           >
             {album.title}
           </h2>
-          <span className="block h-[1px] w-0 group-hover:w-6 group-focus-visible:w-6 bg-white/30 transition-all duration-500 ease-out" />
+          <span className="block h-[1px] w-0 group-hover:w-6 group-focus-visible:w-6 bg-black/30 transition-all duration-500 ease-out" />
         </div>
         {album.count > 0 && (
-          <p className="text-[10px] tracking-[0.1em] text-white/15 group-hover:text-white/35 group-focus-visible:text-white/35 transition-colors duration-500 mt-1.5 font-body">
+          <p className="text-[10px] tracking-[0.1em] text-black/15 group-hover:text-black/35 group-focus-visible:text-black/35 transition-colors duration-500 mt-1.5 font-body">
             <span>{album.count} photos</span>
           </p>
         )}

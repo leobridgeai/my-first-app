@@ -19,6 +19,7 @@ interface CinemaViewerProps {
 
 export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const thumbsRef = useRef<HTMLDivElement>(null);
   const photo = photos[currentIndex];
 
@@ -86,14 +87,15 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
 
   if (!photo || photos.length === 0) return null;
 
-  const THUMB_H = 72;
+  const THUMB_H = 48;
 
   return (
     <>
-      {/* ===== MOBILE: Full-screen snap-scroll viewer ===== */}
+      {/* ===== MOBILE: Full-screen snap-scroll viewer (stays dark) ===== */}
       <div
         className="md:hidden fixed inset-0 bg-black overflow-y-auto z-20"
         style={{ scrollSnapType: "y mandatory" }}
+        onScroll={() => { if (!hasScrolled) setHasScrolled(true); }}
       >
         {photos.map((p, i) => (
           <div
@@ -108,35 +110,43 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
               className="max-w-full max-h-full object-contain"
               loading={i < 2 ? "eager" : "lazy"}
             />
+            {/* Scroll hint on first slide */}
+            {i === 0 && !hasScrolled && (
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-white/40">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            )}
           </div>
         ))}
       </div>
 
-      {/* ===== DESKTOP: Existing cinema viewer (unchanged) ===== */}
+      {/* ===== DESKTOP: Cinema viewer ===== */}
       <div className="hidden md:flex h-screen flex-col select-none overflow-hidden">
-        {/* Header — album title + back link + counter */}
-        <div className="flex-shrink-0 pt-32 pb-8 px-32 flex items-baseline justify-between">
+        {/* Header — album title + back link */}
+        <div className="flex-shrink-0 pt-24 pb-4 px-16 flex items-baseline justify-between">
           <div className="flex items-baseline gap-4">
             <Link
               href="/work"
-              className="text-white/30 hover:text-white/60 transition-colors duration-300 text-xs tracking-[0.2em] uppercase"
+              className="text-black/30 hover:text-black/60 transition-colors duration-300 text-xs tracking-[0.2em] uppercase"
             >
               &larr; Work
             </Link>
             {albumName && (
-              <h2 className="text-white text-3xl font-bold tracking-normal" style={{ fontFamily: "var(--font-body), system-ui, sans-serif" }}>
+              <h2 className="text-black text-3xl font-bold tracking-normal" style={{ fontFamily: "var(--font-body), system-ui, sans-serif" }}>
                 {albumName}
               </h2>
             )}
           </div>
         </div>
 
-        {/* Main image area — generous margins for exhibition framing */}
-        <div className="flex-1 relative flex items-center justify-center min-h-0 overflow-hidden px-32 pt-0 pb-4">
+        {/* Main image area */}
+        <div className="flex-1 relative flex items-center justify-center min-h-0 overflow-hidden px-16 pt-0 pb-2">
           {/* Previous arrow */}
           <button
             onClick={goPrev}
-            className="absolute left-20 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white/90 transition-colors duration-300 p-2"
+            className="absolute left-8 top-1/2 -translate-y-1/2 z-10 text-black/40 hover:text-black/70 transition-colors duration-300 p-2"
             aria-label="Previous photo"
           >
             <svg
@@ -155,20 +165,20 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
             </svg>
           </button>
 
-          {/* The photograph — framed within generous black space */}
+          {/* The photograph — framed with generous space, never cropped */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             key={photo.id}
             src={optimizeCloudinaryUrl(photo.cloudinaryUrl, { width: 1600 })}
             alt={photo.title || "Photograph"}
             className="max-w-full max-h-full object-contain transition-opacity duration-500"
-            style={{ maxHeight: "calc(100vh - 240px)", maxWidth: "calc(100vw - 200px)" }}
+            style={{ maxHeight: "calc(100vh - 200px)", maxWidth: "calc(100vw - 120px)" }}
           />
 
           {/* Next arrow */}
           <button
             onClick={goNext}
-            className="absolute right-20 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white/90 transition-colors duration-300 p-2"
+            className="absolute right-8 top-1/2 -translate-y-1/2 z-10 text-black/40 hover:text-black/70 transition-colors duration-300 p-2"
             aria-label="Next photo"
           >
             <svg
@@ -189,12 +199,12 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
         </div>
 
         {/* Thumbnail filmstrip */}
-        <div className="flex-shrink-0 py-5">
+        <div className="flex-shrink-0 py-3">
           <div
             ref={thumbsRef}
             role="tablist"
             aria-label="Photo thumbnails"
-            className="flex items-center justify-center gap-1.5 overflow-x-auto px-6 cinema-thumbstrip"
+            className="flex items-center justify-center gap-1 overflow-x-auto px-6 cinema-thumbstrip"
           >
             {photos.map((p, i) => (
               <button
@@ -211,7 +221,7 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={optimizeCloudinaryUrl(p.cloudinaryUrl, { height: 150 })}
+                  src={optimizeCloudinaryUrl(p.cloudinaryUrl, { height: 100 })}
                   alt=""
                   className="block"
                   style={{ height: THUMB_H, width: Math.round(THUMB_H * (p.width / p.height)) }}
