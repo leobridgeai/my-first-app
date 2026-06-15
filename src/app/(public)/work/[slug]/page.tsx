@@ -79,7 +79,7 @@ export default async function AlbumPage({ params }: Props) {
   if (photos.length === 0) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <p className="text-black/20 text-sm tracking-[0.2em] uppercase">
+        <p className="text-white/20 text-sm tracking-[0.2em] uppercase">
           No photographs yet.
         </p>
       </div>

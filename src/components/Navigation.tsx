@@ -56,14 +56,14 @@ export default function Navigation() {
       className={`fixed ${isWork ? "md:absolute" : ""} top-0 left-0 right-0 z-50 transition-all duration-300 ${
         navVisible ? "translate-y-0" : "-translate-y-full"
       } ${
-        isHome ? "bg-transparent" : isWork ? "bg-white/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none" : "bg-white/90 backdrop-blur-sm border-b border-black/5"
+        isHome ? "bg-transparent" : isWork ? "bg-black/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none" : "bg-black/90 backdrop-blur-sm border-b border-white/5"
       }`}
     >
       <div className="max-w-[1400px] mx-auto px-4 md:px-12 h-14 md:h-[72px] flex items-center justify-between">
         <Link
           href="/work"
           className={`text-xs md:text-sm tracking-[0.4em] uppercase font-semibold hover:opacity-70 transition-opacity ${
-            isHome ? "text-white text-glitch" : "text-black"
+            isHome ? "text-white text-glitch" : "text-white"
           }`}
         >
           Portfolio
@@ -77,8 +77,8 @@ export default function Navigation() {
               href={link.href}
               className={`text-[10px] tracking-[0.35em] uppercase font-medium transition-all duration-200 pb-1 border-b ${
                 pathname.startsWith(link.href)
-                  ? `${isHome ? "text-white border-white/40" : "text-black border-black/40"}`
-                  : `${isHome ? "text-white/40 hover:text-white" : "text-black/40 hover:text-black"} border-transparent`
+                  ? `${isHome ? "text-white border-white/40" : "text-white border-white/40"}`
+                  : `${isHome ? "text-white/40 hover:text-white" : "text-white/40 hover:text-white"} border-transparent`
               }`}
             >
               {link.label}

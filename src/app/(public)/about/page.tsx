@@ -57,7 +57,7 @@ export default async function AboutPage() {
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
           {/* Portrait */}
           <div className="relative">
-            <div className="aspect-[3/4] bg-surface border border-black/5 flex items-center justify-center overflow-hidden">
+            <div className="aspect-[3/4] bg-surface border border-white/5 flex items-center justify-center overflow-hidden">
               {content.imageUrl ? (
                 <Image
                   src={optimizeCloudinaryUrl(content.imageUrl, { width: 800 })}
@@ -97,7 +97,7 @@ export default async function AboutPage() {
             </h2>
             <div className="space-y-6 text-muted leading-relaxed text-[15px]">
               {content.quote && (
-                <p className="text-black/90 text-lg md:text-xl leading-relaxed font-heading italic">
+                <p className="text-white/90 text-lg md:text-xl leading-relaxed font-heading italic">
                   &ldquo;{content.quote}&rdquo;
                 </p>
               )}
@@ -107,7 +107,7 @@ export default async function AboutPage() {
                 ))
               ) : (
                 <>
-                  <p className="text-black/90 text-lg md:text-xl leading-relaxed font-heading italic">
+                  <p className="text-white/90 text-lg md:text-xl leading-relaxed font-heading italic">
                     &ldquo;I get close because that&apos;s the only way to get
                     to the truth of a face.&rdquo;
                   </p>
@@ -130,8 +130,8 @@ export default async function AboutPage() {
               )}
             </div>
 
-            <div className="mt-12 pt-12 border-t border-black/10">
-              <h3 className="text-[10px] tracking-[0.35em] uppercase text-black/60 mb-6 font-semibold">
+            <div className="mt-12 pt-12 border-t border-white/10">
+              <h3 className="text-[10px] tracking-[0.35em] uppercase text-white/60 mb-6 font-semibold">
                 Approach
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -145,7 +145,7 @@ export default async function AboutPage() {
                 ].map((specialty) => (
                   <span
                     key={specialty}
-                    className="px-4 py-2 text-[10px] tracking-[0.2em] uppercase border border-black/10 text-black/50 hover:text-black hover:border-black/40 hover:bg-black/5 transition-all duration-200"
+                    className="px-4 py-2 text-[10px] tracking-[0.2em] uppercase border border-white/10 text-white/50 hover:text-white hover:border-white/40 hover:bg-white/5 transition-all duration-200"
                   >
                     {specialty}
                   </span>

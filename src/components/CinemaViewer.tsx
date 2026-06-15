@@ -129,12 +129,12 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
           <div className="flex items-baseline gap-4">
             <Link
               href="/work"
-              className="text-black/30 hover:text-black/60 transition-colors duration-300 text-xs tracking-[0.2em] uppercase"
+              className="text-white/30 hover:text-white/60 transition-colors duration-300 text-xs tracking-[0.2em] uppercase"
             >
               &larr; Work
             </Link>
             {albumName && (
-              <h2 className="text-black text-3xl font-bold tracking-normal" style={{ fontFamily: "var(--font-body), system-ui, sans-serif" }}>
+              <h2 className="text-white text-3xl font-bold tracking-normal" style={{ fontFamily: "var(--font-body), system-ui, sans-serif" }}>
                 {albumName}
               </h2>
             )}
@@ -146,7 +146,7 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
           {/* Previous arrow */}
           <button
             onClick={goPrev}
-            className="absolute left-8 top-1/2 -translate-y-1/2 z-10 text-black/40 hover:text-black/70 transition-colors duration-300 p-2"
+            className="absolute left-8 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white/90 transition-colors duration-300 p-2"
             aria-label="Previous photo"
           >
             <svg
@@ -178,7 +178,7 @@ export default function CinemaViewer({ photos, albumName }: CinemaViewerProps) {
           {/* Next arrow */}
           <button
             onClick={goNext}
-            className="absolute right-8 top-1/2 -translate-y-1/2 z-10 text-black/40 hover:text-black/70 transition-colors duration-300 p-2"
+            className="absolute right-8 top-1/2 -translate-y-1/2 z-10 text-white/60 hover:text-white/90 transition-colors duration-300 p-2"
             aria-label="Next photo"
           >
             <svg

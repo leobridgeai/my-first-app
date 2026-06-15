@@ -3,12 +3,12 @@
 @theme inline {
   --font-heading: var(--font-playfair);
   --font-body: var(--font-inter);
-  --color-background: #ffffff;
-  --color-foreground: #1a1a1a;
-  --color-muted: #666666;
-  --color-border: #e5e5e5;
-  --color-accent: #000000;
-  --color-surface: #f5f5f5;
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+  --color-muted: #777777;
+  --color-border: #1a1a1a;
+  --color-accent: #ffffff;
+  --color-surface: #0a0a0a;
 }
 
 /* Bruce Gilden inspired - high contrast, raw, gritty */
@@ -24,8 +24,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Selection styling */
 ::selection {
-  background: #000;
-  color: #fff;
+  background: #fff;
+  color: #000;
 }
 
 /* Lightbox overlay */
@@ -138,18 +138,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ccc;
+  background: #333;
   border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #999;
+  background: #fff;
 }
 
 /* Horizontal rule style */
 .harsh-divider {
   height: 1px;
-  background: linear-gradient(to right, #000, transparent);
+  background: linear-gradient(to right, #fff, transparent);
   border: none;
 }
 
