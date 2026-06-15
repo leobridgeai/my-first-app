@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import {
   SITE_URL,
@@ -117,6 +118,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${heading.variable} ${body.variable} antialiased grain-overlay`}>
         {children}
+        <Analytics />
       </body>
     </html>
   );
